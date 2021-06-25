@@ -90,6 +90,7 @@ export default class Home extends PureComponent {
     seedPhraseBackedUp: PropTypes.bool.isRequired,
     newNetworkAdded: PropTypes.string,
     setNewNetworkAdded: PropTypes.func.isRequired,
+    failedTransactionsToDisplayCount: PropTypes.number,
   };
 
   state = {
@@ -110,6 +111,7 @@ export default class Home extends PureComponent {
       showAwaitingSwapScreen,
       swapsFetchParams,
       pendingConfirmations,
+      failedTransactionsToDisplayCount,
     } = this.props;
 
     // eslint-disable-next-line react/no-unused-state
@@ -124,7 +126,10 @@ export default class Home extends PureComponent {
       history.push(BUILD_QUOTE_ROUTE);
     } else if (firstPermissionsRequestId) {
       history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`);
-    } else if (unconfirmedTransactionsCount > 0) {
+    } else if (
+      unconfirmedTransactionsCount > 0 ||
+      failedTransactionsToDisplayCount > 0
+    ) {
       history.push(CONFIRM_TRANSACTION_ROUTE);
     } else if (suggestedAssets.length > 0) {
       history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE);

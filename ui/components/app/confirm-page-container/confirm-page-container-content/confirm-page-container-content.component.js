@@ -36,6 +36,7 @@ export default class ConfirmPageContainerContent extends Component {
     unapprovedTxCount: PropTypes.number,
     rejectNText: PropTypes.string,
     hideTitle: PropTypes.boolean,
+    isFailedTransaction: PropTypes.bool,
   };
 
   renderContent() {
@@ -91,6 +92,7 @@ export default class ConfirmPageContainerContent extends Component {
       origin,
       ethGasPriceWarning,
       hideTitle,
+      isFailedTransaction,
     } = this.props;
 
     return (
@@ -126,6 +128,8 @@ export default class ConfirmPageContainerContent extends Component {
           onSubmit={onSubmit}
           submitText={submitText}
           disabled={disabled}
+          hideCancel={isFailedTransaction}
+          submitButtonType={isFailedTransaction ? 'default' : 'confirm'}
         >
           {unapprovedTxCount > 1 ? (
             <a onClick={onCancelAll}>{rejectNText}</a>
