@@ -59,9 +59,20 @@ import {
   transactionMatchesNetwork,
   txParamsAreDappSuggested,
 } from '../../../shared/modules/transaction.utils';
-import { toChecksumHexAddress } from '../../../shared/modules/hexstring-utils';
 
-import { getGasLoadingAnimationIsShowing } from '../../ducks/app/app';
+import {
+  addTxToFailedTxesToDisplay,
+  removeTxFromFailedTxesToDisplay,
+  getGasLoadingAnimationIsShowing,
+} from '../../ducks/app/app';
+import { toChecksumHexAddress } from '../../../shared/modules/hexstring-utils';
+import {
+  updateTransactionGasFees,
+  getIsGasEstimatesLoading,
+  getNativeCurrency,
+  isAddressLedger,
+} from '../../ducks/metamask/metamask';
+
 import { isLegacyTransaction } from '../../helpers/utils/transactions.util';
 import { CUSTOM_GAS_ESTIMATE } from '../../../shared/constants/gas';
 import ConfirmTransactionBase from './confirm-transaction-base.component';
@@ -199,6 +210,9 @@ const mapStateToProps = (state, ownProps) => {
   const isFailedTransaction = Boolean(
     failedTransactionsToDisplay[fullTxData.id],
   );
+  const isFailedTransaction = Boolean(
+    failedTransactionsToDisplay[fullTxData.id],
+  );
 
   return {
     balance,
@@ -283,7 +297,8 @@ export const mapDispatchToProps = (dispatch) => {
     updateTransactionGasFees: (gasFees) => {
       dispatch(updateTransactionGasFees({ ...gasFees, expectHexWei: true }));
     },
-    addTxToFailedTxesToDisplay: (id) => dispatch(addTxToFailedTxesToDisplay(id)),
+    addTxToFailedTxesToDisplay: (id) =>
+      dispatch(addTxToFailedTxesToDisplay(id)),
     removeTxFromFailedTxesToDisplay: (id) =>
       dispatch(removeTxFromFailedTxesToDisplay(id)),
   };

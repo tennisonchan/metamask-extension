@@ -406,10 +406,7 @@ export function getFailedTransactionsToDisplay(state) {
   const { failedTransactionsToDisplay = {} } = state.appState;
   const failedTransactions = currentNetworkTxList.reduce(
     (_failedTransactions, tx) => {
-      if (
-        failedTransactionsToDisplay[tx.id] &&
-        (tx.err || tx.status === 'approved' || tx.status === 'signed')
-      ) {
+      if (failedTransactionsToDisplay[tx.id] && tx.err) {
         return { ..._failedTransactions, [tx.id]: tx };
       }
       return _failedTransactions;

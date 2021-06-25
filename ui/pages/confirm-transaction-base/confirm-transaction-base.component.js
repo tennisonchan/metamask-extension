@@ -748,6 +748,7 @@ export default class ConfirmTransactionBase extends Component {
             );
           })
           .catch((error) => {
+            addTxToFailedTxesToDisplay(txData.id);
             this.setState({
               submitting: false,
               submitError: error.message,
