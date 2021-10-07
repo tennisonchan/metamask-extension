@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ErrorMessage = (props, context) => {
-  const { errorMessage, errorKey } = props;
+  const { errorMessage, errorKey, onErrorMessageClick, linkText } = props;
   const error = errorKey ? context.t(errorKey) : errorMessage;
 
   return (
@@ -12,7 +12,15 @@ const ErrorMessage = (props, context) => {
         alt=""
         className="error-message__icon"
       />
-      <div className="error-message__text">{error}</div>
+      <div className="error-message__text">
+        {error}{' '}
+        <span
+          style={{ cursor: 'pointer', color: 'rgb(47, 154, 224)' }}
+          onClick={onErrorMessageClick}
+        >
+          {linkText}
+        </span>
+      </div>
     </div>
   );
 };
@@ -20,6 +28,8 @@ const ErrorMessage = (props, context) => {
 ErrorMessage.propTypes = {
   errorMessage: PropTypes.string,
   errorKey: PropTypes.string,
+  linkText: PropTypes.string,
+  onErrorMessageClick: PropTypes.func,
 };
 
 ErrorMessage.contextTypes = {

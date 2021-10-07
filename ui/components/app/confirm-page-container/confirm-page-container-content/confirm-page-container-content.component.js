@@ -67,6 +67,10 @@ export default class ConfirmPageContainerContent extends Component {
     );
   }
 
+  onErrorMessageClick(message) {
+    alert(message);
+  }
+
   render() {
     const {
       action,
@@ -119,7 +123,12 @@ export default class ConfirmPageContainerContent extends Component {
         {this.renderContent()}
         {(errorKey || errorMessage) && (
           <div className="confirm-page-container-content__error-container">
-            <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
+            <ErrorMessage
+              errorMessage={this.context.t('somethingWentWrong2')}
+              errorKey={errorKey}
+              linkText={this.context.t('moreDetails')}
+              onErrorMessageClick={() => this.onErrorMessageClick(errorMessage)}
+            />
           </div>
         )}
         <PageContainerFooter
