@@ -61,7 +61,7 @@ import {
 } from '../../../shared/modules/transaction.utils';
 
 import {
-  addTxToFailedTxesToDisplay,
+  addTxToDisplay,
   removeTxFromFailedTxesToDisplay,
   getGasLoadingAnimationIsShowing,
 } from '../../ducks/app/app';
@@ -297,8 +297,7 @@ export const mapDispatchToProps = (dispatch) => {
     updateTransactionGasFees: (gasFees) => {
       dispatch(updateTransactionGasFees({ ...gasFees, expectHexWei: true }));
     },
-    addTxToFailedTxesToDisplay: (id) =>
-      dispatch(addTxToFailedTxesToDisplay(id)),
+    addTxToDisplay: (id) => dispatch(addTxToDisplay(id)),
     removeTxFromFailedTxesToDisplay: (id) =>
       dispatch(removeTxFromFailedTxesToDisplay(id)),
   };

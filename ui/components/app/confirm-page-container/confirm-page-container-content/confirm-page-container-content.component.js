@@ -72,6 +72,10 @@ export default class ConfirmPageContainerContent extends Component {
     );
   }
 
+  onErrorMessageClick(message) {
+    alert(message);
+  }
+
   render() {
     const {
       action,
