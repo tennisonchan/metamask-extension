@@ -68,7 +68,7 @@ export default class ConfirmPageContainerContent extends Component {
   }
 
   onErrorMessageClick(message) {
-    alert(message);
+    console.log(message);
   }
 
   render() {

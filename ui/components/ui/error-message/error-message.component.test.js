@@ -6,15 +6,18 @@ describe('ErrorMessage Component', () => {
   const t = (key) => `translate ${key}`;
 
   it('should render a message from props.errorMessage', () => {
-    const wrapper = shallow(<ErrorMessage errorMessage="This is an error." />, {
-      context: { t },
-    });
+    const wrapper = shallow(
+      <ErrorMessage errorMessage="This is an error." linkText="More Details" />,
+      {
+        context: { t },
+      },
+    );
 
     expect(wrapper).toHaveLength(1);
     expect(wrapper.find('.error-message')).toHaveLength(1);
     expect(wrapper.find('.error-message__icon')).toHaveLength(1);
     expect(wrapper.find('.error-message__text').text()).toStrictEqual(
-      'This is an error.',
+      'This is an error. More Details',
     );
   });
 
@@ -27,7 +30,7 @@ describe('ErrorMessage Component', () => {
     expect(wrapper.find('.error-message')).toHaveLength(1);
     expect(wrapper.find('.error-message__icon')).toHaveLength(1);
     expect(wrapper.find('.error-message__text').text()).toStrictEqual(
-      'translate testKey',
+      'translate testKey ',
     );
   });
 });
