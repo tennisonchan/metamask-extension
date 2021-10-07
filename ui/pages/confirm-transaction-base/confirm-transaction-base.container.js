@@ -257,6 +257,9 @@ export const mapDispatchToProps = (dispatch) => {
     tryReverseResolveAddress: (address) => {
       return dispatch(tryReverseResolveAddress(address));
     },
+    showTransactionErrorDialog: (message) => {
+      dispatch(showModal({ name: 'TRANSACTOR_ERROR_DETAILS', data: message }));
+    },
     updateCustomNonce: (value) => {
       customNonceValue = value;
       dispatch(updateCustomNonce(value));
