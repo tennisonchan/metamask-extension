@@ -172,6 +172,11 @@ const MODALS = {
     ...accountModalStyle,
   },
 
+  TRANSACTOR_ERROR_DETAILS: {
+    contents: <AccountDetailsModal />,
+    ...accountModalStyle,
+  },
+
   EXPORT_PRIVATE_KEY: {
     contents: <ExportPrivateKeyModal />,
     ...accountModalStyle,
