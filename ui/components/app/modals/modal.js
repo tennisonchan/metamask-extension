@@ -13,6 +13,7 @@ import ConfirmCustomizeGasModal from '../gas-customization/gas-modal-page-contai
 import SwapsGasCustomizationModal from '../../../pages/swaps/swaps-gas-customization-modal';
 import DepositEtherModal from './deposit-ether-modal';
 import AccountDetailsModal from './account-details-modal';
+import TransactionErrorDetailsModal from './transaction-error-details-modal';
 import ExportPrivateKeyModal from './export-private-key-modal';
 import HideTokenConfirmationModal from './hide-token-confirmation-modal';
 import QRScanner from './qr-scanner';
@@ -173,8 +174,16 @@ const MODALS = {
   },
 
   TRANSACTOR_ERROR_DETAILS: {
-    contents: <AccountDetailsModal />,
-    ...accountModalStyle,
+    contents: <TransactionErrorDetailsModal />,
+    mobileModalStyle: {
+      ...modalContainerMobileStyle,
+    },
+    laptopModalStyle: {
+      ...modalContainerLaptopStyle,
+    },
+    contentStyle: {
+      borderRadius: '8px',
+    },
   },
 
   EXPORT_PRIVATE_KEY: {
