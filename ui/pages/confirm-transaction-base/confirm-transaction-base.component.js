@@ -135,8 +135,8 @@ export default class ConfirmTransactionBase extends Component {
     supportsEIP1559: PropTypes.bool,
     hardwareWalletRequiresConnection: PropTypes.bool,
     isFailedTransaction: PropTypes.bool,
-    removeTxFromFailedTxesToDisplay: PropTypes.bool,
-    addTxToDisplay: PropTypes.bool,
+    removeTxFromFailedTxesToDisplay: PropTypes.func,
+    addTxToDisplay: PropTypes.func,
     showTransactionErrorDialog: PropTypes.func,
   };
 

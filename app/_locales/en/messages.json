@@ -1459,7 +1459,7 @@
     "message": "The 'Sync with extension' feature is temporarily disabled. If you want to use your extension wallet on MetaMask mobile, then on your mobile app: go back to the wallet setup options and select the 'Import with Secret Recovery Phrase' option. Use your extension wallet's secret phrase to then import your wallet into mobile."
   },
   "moreDetails": {
-    "message": "More details..."
+    "message": "More details"
   },
   "mustSelectOne": {
     "message": "Must select at least 1 token."
@@ -2259,9 +2259,6 @@
     "message": "Slow"
   },
   "somethingWentWrong": {
-    "message": "Oops! Something went wrong."
-  },
-  "somethingWentWrong2": {
     "message": "Something went wrong."
   },
   "speedUp": {
