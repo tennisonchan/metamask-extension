@@ -4,11 +4,16 @@ import classnames from 'classnames';
 import { Tabs, Tab } from '../../../ui/tabs';
 import ErrorMessage from '../../../ui/error-message';
 import { PageContainerFooter } from '../../../ui/page-container';
+import TransactionErrorDetailsModal from '../../modals/transaction-error-details-modal/transaction-error-details';
 import { ConfirmPageContainerSummary, ConfirmPageContainerWarning } from '.';
 
 export default class ConfirmPageContainerContent extends Component {
   static contextTypes = {
     t: PropTypes.func.isRequired,
+  };
+
+  state = {
+    showTransactionErrorDetails: false,
   };
 
   static propTypes = {
@@ -37,7 +42,6 @@ export default class ConfirmPageContainerContent extends Component {
     rejectNText: PropTypes.string,
     hideTitle: PropTypes.boolean,
     isFailedTransaction: PropTypes.bool,
-    onErrorMessageClick: PropTypes.func,
   };
 
   renderContent() {
@@ -94,7 +98,6 @@ export default class ConfirmPageContainerContent extends Component {
       ethGasPriceWarning,
       hideTitle,
       isFailedTransaction,
-      onErrorMessageClick,
     } = this.props;
 
     return (
@@ -125,9 +128,19 @@ export default class ConfirmPageContainerContent extends Component {
               errorMessage={this.context.t('somethingWentWrong')}
               errorKey={errorKey}
               linkText={this.context.t('moreDetails')}
-              onErrorMessageClick={() => onErrorMessageClick(errorMessage)}
+              onErrorMessageClick={() =>
+                this.setState({ showTransactionErrorDetails: true })
+              }
             />
           </div>
+        )}
+        {this.state.showTransactionErrorDetails && (
+          <TransactionErrorDetailsModal
+            message={errorMessage}
+            closePopover={() => {
+              this.setState({ showTransactionErrorDetails: false });
+            }}
+          />
         )}
         <PageContainerFooter
           onCancel={onCancel}

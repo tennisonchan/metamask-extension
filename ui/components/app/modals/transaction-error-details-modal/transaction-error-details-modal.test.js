@@ -26,6 +26,7 @@ describe('Transaction Error Details Modal', () => {
   const store = configureMockStore()(mockStore);
   const props = {
     network: 'test',
+    closePopover: jest.fn(),
     message: `[ethjs-query] while formatting outputs from RPC '{"value":{"code":-32000,"message":"intrinsic gas too low"}}'`,
   };
 
