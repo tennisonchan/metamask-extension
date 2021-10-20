@@ -30,7 +30,6 @@ import AddToAddressBookModal from './add-to-addressbook-modal';
 import EditApprovalPermission from './edit-approval-permission';
 import NewAccountModal from './new-account-modal';
 import CustomizeNonceModal from './customize-nonce';
-import TransactionErrorDetailsModal from './transaction-error-details-modal/transaction-error-details';
 
 const modalContainerBaseStyle = {
   transform: 'translate3d(-50%, 0, 0px)',
@@ -171,19 +170,6 @@ const MODALS = {
   ACCOUNT_DETAILS: {
     contents: <AccountDetailsModal />,
     ...accountModalStyle,
-  },
-
-  TRANSACTION_ERROR_DETAILS: {
-    contents: <TransactionErrorDetailsModal />,
-    mobileModalStyle: {
-      ...modalContainerMobileStyle,
-    },
-    laptopModalStyle: {
-      ...modalContainerLaptopStyle,
-    },
-    contentStyle: {
-      borderRadius: '8px',
-    },
   },
 
   EXPORT_PRIVATE_KEY: {
