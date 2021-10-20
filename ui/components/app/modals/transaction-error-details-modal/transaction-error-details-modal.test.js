@@ -1,16 +1,15 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { act } from '@testing-library/react';
-import Tooltip from '../../../ui/tooltip';
-import Button from '../../../ui/button';
-import Copy from '../../../ui/icon/copy-icon.component';
-import { mountWithRouter } from '../../../../../test/lib/render-helpers';
+import { fireEvent, screen } from '@testing-library/react';
+import { renderWithProvider } from '../../../../../test/lib/render-helpers';
 import TransactionErrorDetailsModal from './transaction-error-details';
 
-describe('Transaction Error Details Modal', () => {
-  let wrapper;
+const mockHandleCopy = jest.fn();
+jest.mock('../../../../hooks/useCopyToClipboard', () => ({
+  useCopyToClipboard: () => [true, mockHandleCopy],
+}));
 
+describe('Transaction Error Details Modal', () => {
   const mockStore = {
     metamask: {
       provider: {
@@ -30,38 +29,24 @@ describe('Transaction Error Details Modal', () => {
     message: `[ethjs-query] while formatting outputs from RPC '{"value":{"code":-32000,"message":"intrinsic gas too low"}}'`,
   };
 
-  beforeEach(() => {
-    wrapper = mountWithRouter(
-      <Provider store={store}>
-        <TransactionErrorDetailsModal.WrappedComponent {...props} />
-      </Provider>,
-      store,
-    );
-  });
+  it('shows transaction error details alert', async () => {
+    renderWithProvider(<TransactionErrorDetailsModal {...props} />, store);
 
-  it('shows account details modal', () => {
-    const div = wrapper.find('.transaction-error-details__main');
-    expect(div.children()).toHaveLength(4);
-    expect(div.childAt(0).name()).toStrictEqual('div');
-    const tooltip = div.find(Tooltip);
-    expect(tooltip.first().prop('title')).toStrictEqual('[copyToClipboard]');
-    expect(tooltip.children()).toHaveLength(1);
-    expect(tooltip.first().children()).toHaveLength(1);
-    expect(div.find(Copy).prop('size')).toStrictEqual(17);
+    const heading = screen.getByRole('heading', { name: 'Details' });
+    expect(heading.title).toStrictEqual('Details');
 
-    const h2 = div.find('.transaction-error-details__header__title').childAt(0);
-    expect(h2.prop('children')).toStrictEqual('[details]');
+    const closeButton = screen.getByRole('button', { name: 'Close' });
+    expect(closeButton.title).toStrictEqual('Close');
+    fireEvent.click(closeButton);
+    expect(props.closePopover).toHaveBeenCalledTimes(1);
 
-    const copyButton = tooltip.find(Button);
-    expect(copyButton).toBeDefined();
-    expect(copyButton).toHaveLength(1);
-    const mockCopyEvent = { preventDefault: jest.fn() };
-    act(() => copyButton.prop('onClick')(mockCopyEvent));
+    const copyToClipboard = screen.getByRole('button', {
+      name: 'Copy to clipboard',
+    });
+    fireEvent.click(copyToClipboard);
+    expect(mockHandleCopy).toHaveBeenCalledTimes(1);
 
-    const closeButton = div.find('.popover-header__button');
-    expect(closeButton).toBeDefined();
-    expect(closeButton).toHaveLength(1);
-    const mockCloseEvent = { preventDefault: jest.fn() };
-    act(() => closeButton.prop('onClick')(mockCloseEvent));
+    const message = screen.getByText(/^\[ethjs-query\]/u);
+    expect(message).toBeInTheDocument();
   });
 });
