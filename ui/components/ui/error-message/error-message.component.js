@@ -14,10 +14,7 @@ const ErrorMessage = (props, context) => {
       />
       <div className="error-message__text">
         {error}{' '}
-        <span
-          style={{ cursor: 'pointer', color: 'rgb(47, 154, 224)' }}
-          onClick={onErrorMessageClick}
-        >
+        <span className="error-message__link" onClick={onErrorMessageClick}>
           {linkText}
         </span>
       </div>
@@ -28,8 +25,8 @@ const ErrorMessage = (props, context) => {
 ErrorMessage.propTypes = {
   errorMessage: PropTypes.string,
   errorKey: PropTypes.string,
-  linkText: PropTypes.string,
-  onErrorMessageClick: PropTypes.func,
+  linkText: PropTypes.string.isRequired,
+  onErrorMessageClick: PropTypes.func.isRequired,
 };
 
 ErrorMessage.contextTypes = {

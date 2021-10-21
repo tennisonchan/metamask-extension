@@ -19,4 +19,9 @@
   &__text {
     overflow: auto;
   }
+
+  &__link {
+    cursor: pointer;
+    color: rgb(47, 154, 224);
+  }
 }
