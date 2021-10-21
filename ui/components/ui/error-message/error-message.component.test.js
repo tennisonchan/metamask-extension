@@ -71,7 +71,7 @@ describe('ErrorMessage Component', () => {
     expect(wrapper.find('.error-message__icon')).toHaveLength(1);
     expect(wrapper.find('.error-message__text')).toHaveLength(1);
     expect(wrapper.find('.error-message__text').text()).toStrictEqual(
-      'translate testKey ',
+      'translate testKey More Details',
     );
     const linkText = wrapper.find('.error-message__link');
     expect(linkText).toHaveLength(0);
