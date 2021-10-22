@@ -30,8 +30,8 @@ const ErrorMessage = (props, context) => {
 ErrorMessage.propTypes = {
   errorMessage: PropTypes.string,
   errorKey: PropTypes.string,
-  linkText: PropTypes.string.isRequired,
-  onErrorMessageClick: PropTypes.func.isRequired,
+  linkText: PropTypes.string,
+  onErrorMessageClick: PropTypes.func,
 };
 
 ErrorMessage.contextTypes = {
