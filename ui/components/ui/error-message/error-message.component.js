@@ -13,10 +13,14 @@ const ErrorMessage = (props, context) => {
         className="error-message__icon"
       />
       <div className="error-message__text">
-        {error}{' '}
-        <span className="error-message__link" onClick={onErrorMessageClick}>
-          {linkText}
-        </span>
+        {error}
+        {linkText ? (
+          <span className="error-message__link" onClick={onErrorMessageClick}>
+            {` ${linkText}`}
+          </span>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );
@@ -25,8 +29,8 @@ const ErrorMessage = (props, context) => {
 ErrorMessage.propTypes = {
   errorMessage: PropTypes.string,
   errorKey: PropTypes.string,
-  linkText: PropTypes.string.isRequired,
-  onErrorMessageClick: PropTypes.func.isRequired,
+  linkText: PropTypes.string,
+  onErrorMessageClick: PropTypes.func,
 };
 
 ErrorMessage.contextTypes = {
