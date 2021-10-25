@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '../button';
 
 const ErrorMessage = (props, context) => {
   const { errorMessage, errorKey, onErrorMessageClick, linkText } = props;
@@ -15,9 +16,9 @@ const ErrorMessage = (props, context) => {
       <div className="error-message__text">
         {error}
         {linkText ? (
-          <span className="error-message__link" onClick={onErrorMessageClick}>
+          <a className="error-message__link" onClick={onErrorMessageClick}>
             {` ${linkText}`}
-          </span>
+          </a>
         ) : (
           ''
         )}

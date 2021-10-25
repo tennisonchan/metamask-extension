@@ -21,7 +21,17 @@
   }
 
   &__link {
+    text-decoration: none;
     cursor: pointer;
-    color: rgb(47, 154, 224);
+    color: $Blue-500;
+
+    &:hover {
+      color: $Blue-400;
+    }
+  
+    &:active {
+      color: $Blue-600;
+    }
+  
   }
 }
