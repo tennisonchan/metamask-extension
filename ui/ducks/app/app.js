@@ -404,7 +404,7 @@ export function hideWhatsNewPopup() {
 export function toggleGasLoadingAnimation(value) {
   return { type: actionConstants.TOGGLE_GAS_LOADING_ANIMATION, value };
 }
-export function addTxToDisplay(txId) {
+export function addTxToFailedTxesToDisplay(txId) {
   return {
     type: actionConstants.ADD_TXS_TO_DISPLAY,
     value: txId,
