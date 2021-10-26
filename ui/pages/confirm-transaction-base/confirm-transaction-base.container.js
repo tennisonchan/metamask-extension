@@ -35,33 +35,12 @@ import {
 } from '../../selectors';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import {
-  isAddressLedger,
   transactionMatchesNetwork,
   txParamsAreDappSuggested,
 } from '../../../shared/modules/transaction.utils';
-import { KEYRING_TYPES } from '../../../shared/constants/hardware-wallets';
-import { getPlatform } from '../../../app/scripts/lib/util';
-import { PLATFORM_FIREFOX } from '../../../shared/constants/app';
 
 import {
   addTxToFailedTxesToDisplay,
-  removeTxFromFailedTxesToDisplay,
-  getGasLoadingAnimationIsShowing,
-} from '../../ducks/app/app';
-import { toChecksumHexAddress } from '../../../shared/modules/hexstring-utils';
-import {
-  updateTransactionGasFees,
-  getIsGasEstimatesLoading,
-  getNativeCurrency,
-} from '../../ducks/metamask/metamask';
-
-import {
-  transactionMatchesNetwork,
-  txParamsAreDappSuggested,
-} from '../../../shared/modules/transaction.utils';
-
-import {
-  addTxToDisplay,
   removeTxFromFailedTxesToDisplay,
   getGasLoadingAnimationIsShowing,
 } from '../../ducks/app/app';
@@ -206,10 +185,8 @@ const mapStateToProps = (state, ownProps) => {
   const hardwareWalletRequiresConnection = doesAddressRequireLedgerHidConnection(
     state,
     fromAddress,
-  )
-  const isFailedTransaction = Boolean(
-    failedTransactionsToDisplay[fullTxData.id],
   );
+
   const isFailedTransaction = Boolean(
     failedTransactionsToDisplay[fullTxData.id],
   );
@@ -297,7 +274,8 @@ export const mapDispatchToProps = (dispatch) => {
     updateTransactionGasFees: (gasFees) => {
       dispatch(updateTransactionGasFees({ ...gasFees, expectHexWei: true }));
     },
-    addTxToDisplay: (id) => dispatch(addTxToDisplay(id)),
+    addTxToFailedTxesToDisplay: (id) =>
+      dispatch(addTxToFailedTxesToDisplay(id)),
     removeTxFromFailedTxesToDisplay: (id) =>
       dispatch(removeTxFromFailedTxesToDisplay(id)),
   };

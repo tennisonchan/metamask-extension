@@ -38,22 +38,18 @@ const mapStateToProps = (state, ownProps) => {
   const unconfirmedTransactions = unconfirmedTransactionsListSelector(state);
   const failedTransactionsToDisplay = getFailedTransactionsToDisplay(state);
   const totalUnconfirmed = unconfirmedTransactions.length;
-  const failedTransactionsToDisplayStatus = getStatusKey(
-    failedTransactionsToDisplay[id],
-  );
-  if (failedTransactionsToDisplayStatus !== TRANSACTION_STATUSES.FAILED) {
-    const index = failedTransactionsToDisplay.indexOf(
-      failedTransactionsToDisplay[id],
-    );
-    if (index > -1) {
-      failedTransactionsToDisplay.splice(index, 1);
+
+  if (failedTransactionsToDisplay && failedTransactionsToDisplay[id]) {
+    const status = getStatusKey(failedTransactionsToDisplay[id]);
+    if (status !== TRANSACTION_STATUSES.FAILED && status !== TRANSACTION_STATUSES.SIGNED) {
+      delete failedTransactionsToDisplay[id];
     }
   }
   const transaction =
     totalUnconfirmed || failedTransactionsToDisplay[id]
       ? unapprovedTxs[id] ||
-        failedTransactionsToDisplay[id] ||
-        unconfirmedTransactions[0]
+      failedTransactionsToDisplay[id] ||
+      unconfirmedTransactions[0]
       : {};
   const { id: transactionId, type } = transaction;
 
