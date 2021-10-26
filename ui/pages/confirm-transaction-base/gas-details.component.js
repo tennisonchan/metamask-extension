@@ -87,19 +87,21 @@ const GasDetailItem = ({
         </div>
       }
       subText={t('editGasSubTextFee', [
-        <b key="editGasSubTextFeeLabel">{t('editGasSubTextFeeLabel')}</b>,
-        <div
-          key="editGasSubTextFeeValue"
-          className="confirm-page-container-content__currency-container"
-        >
-          {renderHeartBeatIfNotInTest()}
-          <UserPreferencedCurrencyDisplay
-            key="editGasSubTextFeeAmount"
-            type={PRIMARY}
-            value={hexMaximumTransactionFee}
-            hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-          />
-        </div>,
+        <Box key="editGasSubTextFeeLabel" display="inline-flex">
+          <b>{`${t('editGasSubTextFeeLabel')} `}</b>
+          <div
+            key="editGasSubTextFeeValue"
+            className="confirm-page-container-content__currency-container"
+          >
+            {renderHeartBeatIfNotInTest()}
+            <UserPreferencedCurrencyDisplay
+              key="editGasSubTextFeeAmount"
+              type={PRIMARY}
+              value={hexMaximumTransactionFee}
+              hideLabel={!useNativeCurrencyAsPrimaryCurrency}
+            />
+          </div>
+        </Box>,
       ])}
       subTitle={
         supportsEIP1559 && (
