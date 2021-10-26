@@ -31,6 +31,7 @@ const metamaskrc = require('rc')('metamask', {
   INFURA_PROJECT_ID: process.env.INFURA_PROJECT_ID,
   INFURA_PROD_PROJECT_ID: process.env.INFURA_PROD_PROJECT_ID,
   ONBOARDING_V2: process.env.ONBOARDING_V2,
+  EIP_1559_V2: process.env.EIP_1559_V2,
   SEGMENT_HOST: process.env.SEGMENT_HOST,
   SEGMENT_WRITE_KEY: process.env.SEGMENT_WRITE_KEY,
   SENTRY_DSN_DEV:
@@ -698,6 +699,7 @@ function getEnvironmentVariables({ buildType, devMode, testing }) {
         : metamaskrc.SEGMENT_WRITE_KEY,
     SWAPS_USE_DEV_APIS: process.env.SWAPS_USE_DEV_APIS === '1',
     ONBOARDING_V2: metamaskrc.ONBOARDING_V2 === '1',
+    EIP_1559_V2: metamaskrc.EIP_1559_V2 === '1',
   };
 }
 

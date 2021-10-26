@@ -118,7 +118,7 @@ describe('FeeCard', () => {
     const { getByText } = renderWithProvider(<FeeCard {...props} />, store);
     expect(getByText('Using the best quote')).toBeInTheDocument();
     expect(getByText('6 quotes')).toBeInTheDocument();
-    expect(getByText('Estimated gas fee')).toBeInTheDocument();
+    expect(getByText('Gas')).toBeInTheDocument();
     expect(getByText('Maybe in 5 minutes')).toBeInTheDocument();
     expect(getByText(props.primaryFee.fee)).toBeInTheDocument();
     expect(getByText(props.secondaryFee.fee)).toBeInTheDocument();

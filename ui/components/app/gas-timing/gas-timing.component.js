@@ -165,17 +165,9 @@ export default function GasTiming({
         ]);
       }
     } else {
-      text = (
-        <>
-          {t('gasTimingNegative', [
-            toHumanReadableTime(low.maxWaitTimeEstimate, t),
-          ])}
-          <InfoTooltip
-            position="top"
-            contentText={t('editGasTooLowWarningTooltip')}
-          />
-        </>
-      );
+      text = t('gasTimingNegative', [
+        toHumanReadableTime(low.maxWaitTimeEstimate, t),
+      ]);
     }
   }
 

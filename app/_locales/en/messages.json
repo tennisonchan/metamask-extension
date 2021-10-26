@@ -2758,7 +2758,10 @@
     "message": "Edit to use MetaMask's recommended gas fee based on the latest block."
   },
   "transactionDetailGasHeading": {
-    "message": "Estimated gas fee"
+    "message": "Gas"
+  },
+  "transactionDetailGasInfo": {
+    "message": "estimated"
   },
   "transactionDetailGasTooltipConversion": {
     "message": "Learn more about gas fees"
