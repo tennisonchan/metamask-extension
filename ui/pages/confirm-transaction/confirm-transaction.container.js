@@ -41,15 +41,18 @@ const mapStateToProps = (state, ownProps) => {
 
   if (failedTransactionsToDisplay && failedTransactionsToDisplay[id]) {
     const status = getStatusKey(failedTransactionsToDisplay[id]);
-    if (status !== TRANSACTION_STATUSES.FAILED && status !== TRANSACTION_STATUSES.SIGNED) {
+    if (
+      status !== TRANSACTION_STATUSES.FAILED &&
+      status !== TRANSACTION_STATUSES.SIGNED
+    ) {
       delete failedTransactionsToDisplay[id];
     }
   }
   const transaction =
     totalUnconfirmed || failedTransactionsToDisplay[id]
       ? unapprovedTxs[id] ||
-      failedTransactionsToDisplay[id] ||
-      unconfirmedTransactions[0]
+        failedTransactionsToDisplay[id] ||
+        unconfirmedTransactions[0]
       : {};
   const { id: transactionId, type } = transaction;
 
