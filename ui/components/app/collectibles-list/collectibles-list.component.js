@@ -16,7 +16,6 @@ import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_POPUP } from '../../../../shared/constants/app';
 
 export default function CollectiblesList({ onAddNFT }) {
-  const collectibles = [];
   const t = useI18nContext();
   const blockSizes = {
     copy:
@@ -29,12 +28,42 @@ export default function CollectiblesList({ onAddNFT }) {
         : BLOCK_SIZES.ONE_FIFTH,
   };
 
+  const collections = {
+    Opensea: {
+      icon: '',
+      collectibles: [],
+    },
+    ENS: {
+      icon: '',
+      collectibles: [],
+    },
+  };
+
   return (
-    <div className="collectibles-list">
-      {collectibles.length > 0 ? (
-        <span>{JSON.stringify(collectibles)}</span>
+    <Box padding={[4, 6, 4, 6]} flexDirection={FLEX_DIRECTION.COLUMN}>
+      {Object.keys(collections).length > 0 ? (
+        Object.keys(collections).map((key, index) => {
+          const { icon, collectibles } = collections[key];
+          return (
+            <Box
+              marginBottom={4}
+              key={`collection-${index}`}
+              onClick={() => {
+                console.log(`Toggling ${key}`);
+              }}
+            >
+              <Box>
+                <img src={icon} />
+                <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H4}>
+                  {`${key} (${collectibles.length})`}
+                </Typography>
+                <i className="fa fa-caret-down fa-lg" />
+              </Box>
+            </Box>
+          );
+        })
       ) : (
-        <Box padding={[4, 0, 4, 0]} flexDirection={FLEX_DIRECTION.COLUMN}>
+        <>
           <Box justifyContent={JUSTIFY_CONTENT.CENTER}>
             <img src="./images/diamond.png" />
           </Box>
@@ -73,9 +102,9 @@ export default function CollectiblesList({ onAddNFT }) {
               {t('learnMore')}
             </Button>
           </Box>
-        </Box>
+        </>
       )}
-    </div>
+    </Box>
   );
 }
 
