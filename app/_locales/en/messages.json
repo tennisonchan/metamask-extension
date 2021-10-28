@@ -1430,6 +1430,9 @@
     "message": "verify the network details",
     "description": "Serves as link text for the 'mismatchedChain' key. This text will be embedded inside the translation for that key."
   },
+  "missingNFT": {
+    "message": "Don't see your NFT?"
+  },
   "missingToken": {
     "message": "Don't see your token?"
   },

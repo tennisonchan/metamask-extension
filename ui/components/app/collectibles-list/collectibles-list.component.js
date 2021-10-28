@@ -10,6 +10,8 @@ import {
   BLOCK_SIZES,
   JUSTIFY_CONTENT,
   FLEX_DIRECTION,
+  ALIGN_ITEMS,
+  DISPLAY,
 } from '../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
@@ -30,38 +32,87 @@ export default function CollectiblesList({ onAddNFT }) {
 
   const collections = {
     Opensea: {
-      icon: '',
-      collectibles: [],
+      collectibles: [
+        { icon: './images/kitty-1.svg' },
+        { icon: './images/kitty-2.svg' },
+        { icon: './images/kitty-3.svg' },
+        { icon: './images/kitty-1.svg' },
+      ],
     },
-    ENS: {
-      icon: '',
-      collectibles: [],
+    CryptoKitties: {
+      collectibles: [
+        { icon: './images/kitty-1.svg' },
+        { icon: './images/kitty-2.svg' },
+      ],
     },
   };
 
   return (
-    <Box padding={[4, 6, 4, 6]} flexDirection={FLEX_DIRECTION.COLUMN}>
+    <Box
+      padding={[4, 6, 4, 6]}
+      className="collectibles-list"
+      flexDirection={FLEX_DIRECTION.COLUMN}
+    >
       {Object.keys(collections).length > 0 ? (
-        Object.keys(collections).map((key, index) => {
-          const { icon, collectibles } = collections[key];
-          return (
-            <Box
-              marginBottom={4}
-              key={`collection-${index}`}
-              onClick={() => {
-                console.log(`Toggling ${key}`);
-              }}
+        <>
+          {Object.keys(collections).map((key, index) => {
+            const { collectibles } = collections[key];
+            return (
+              <>
+                <Box
+                  marginBottom={2}
+                  display={DISPLAY.FLEX}
+                  alignItems={ALIGN_ITEMS.CENTER}
+                  justifyContent={JUSTIFY_CONTENT.SPACE_BETWEEN}
+                  key={`collection-${index}`}
+                  onClick={() => {
+                    console.log(`Toggling ${key}`);
+                  }}
+                >
+                  <Box alignItems={ALIGN_ITEMS.FLEX_START}>
+                    <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H4}>
+                      {`${key} (${collectibles.length})`}
+                    </Typography>
+                  </Box>
+                  <Box alignItems={ALIGN_ITEMS.FLEX_END}>
+                    <i className="fa fa-caret-down fa-lg" />
+                  </Box>
+                </Box>
+                <Box>
+                  {collectibles.map((collectible, i) => {
+                    return (
+                      <img
+                        src={collectible.icon}
+                        style={{ width: '98px' }}
+                        key={`collectible-${i}`}
+                      />
+                    );
+                  })}
+                </Box>
+              </>
+            );
+          })}
+          <Box
+            marginTop={4}
+            flexDirection={FLEX_DIRECTION.COLUMN}
+            justifyContent={JUSTIFY_CONTENT.CENTER}
+          >
+            <Typography
+              color={COLORS.UI3}
+              variant={TYPOGRAPHY.H5}
+              align={TEXT_ALIGN.CENTER}
             >
-              <Box>
-                <img src={icon} />
-                <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H4}>
-                  {`${key} (${collectibles.length})`}
-                </Typography>
-                <i className="fa fa-caret-down fa-lg" />
-              </Box>
-            </Box>
-          );
-        })
+              {t('missingNFT')}
+            </Typography>
+            <Button
+              className="import-token-link__link"
+              type="link"
+              onClick={onAddNFT}
+            >
+              {t('addNFT')}
+            </Button>
+          </Box>
+        </>
       ) : (
         <>
           <Box justifyContent={JUSTIFY_CONTENT.CENTER}>
