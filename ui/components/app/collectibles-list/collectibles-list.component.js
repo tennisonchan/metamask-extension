@@ -17,7 +17,7 @@ import { useI18nContext } from '../../../hooks/useI18nContext';
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_POPUP } from '../../../../shared/constants/app';
 
-export default function CollectiblesList({ onAddNFT }) {
+export default function CollectiblesList({ onAddNFT, onRefreshList }) {
   const t = useI18nContext();
   const blockSizes = {
     copy:
@@ -118,13 +118,36 @@ export default function CollectiblesList({ onAddNFT }) {
             >
               {t('missingNFT')}
             </Typography>
-            <Button
-              className="import-token-link__link"
-              type="link"
-              onClick={onAddNFT}
+            <Box
+              alignItems={ALIGN_ITEMS.CENTER}
+              justifyContent={JUSTIFY_CONTENT.CENTER}
             >
-              {t('addNFT')}
-            </Button>
+              <Box justifyContent={JUSTIFY_CONTENT.FLEX_END}>
+                <Button
+                  type="link"
+                  onClick={onRefreshList}
+                  style={{ padding: '5px' }}
+                >
+                  {t('refreshList')}
+                </Button>
+              </Box>
+              <Typography
+                color={COLORS.UI3}
+                variant={TYPOGRAPHY.H4}
+                align={TEXT_ALIGN.CENTER}
+              >
+                {t('or')}
+              </Typography>
+              <Box justifyContent={JUSTIFY_CONTENT.FLEX_START}>
+                <Button
+                  type="link"
+                  onClick={onAddNFT}
+                  style={{ padding: '5px' }}
+                >
+                  {t('addNFT').toLowerCase()}
+                </Button>
+              </Box>
+            </Box>
           </Box>
         </>
       ) : (
@@ -175,4 +198,5 @@ export default function CollectiblesList({ onAddNFT }) {
 
 CollectiblesList.propTypes = {
   onAddNFT: PropTypes.func.isRequired,
+  onRefreshList: PropTypes.func.isRequired,
 };

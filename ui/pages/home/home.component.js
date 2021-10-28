@@ -440,6 +440,9 @@ export default class Home extends PureComponent {
                     onAddNFT={() => {
                       console.log('Added NFT');
                     }}
+                    onRefreshList={() => {
+                      console.log('Refreshed NFTs');
+                    }}
                   />
                 </Tab>
               ) : null}
