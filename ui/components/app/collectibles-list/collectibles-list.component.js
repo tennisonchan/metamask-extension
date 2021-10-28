@@ -78,9 +78,9 @@ export default function CollectiblesList({ onAddNFT, onRefreshList }) {
                   </Box>
                   <Box alignItems={ALIGN_ITEMS.FLEX_END}>
                     <i
-                      className={`fa ${
-                        isExpanded ? 'fa-caret-down' : 'fa-caret-up'
-                      } fa-lg`}
+                      className={`fa fa-lg fa-chevron-${
+                        isExpanded ? 'down' : 'up'
+                      }`}
                       onClick={() => {
                         setDropdownState((_dropdownState) => ({
                           ..._dropdownState,
