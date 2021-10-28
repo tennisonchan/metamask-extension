@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '../../ui/box';
 import Button from '../../ui/button';
@@ -47,6 +47,10 @@ export default function CollectiblesList({ onAddNFT }) {
     },
   };
 
+  const defaultDropdownState = {};
+  Object.keys(collections).forEach((key) => (defaultDropdownState[key] = true));
+  const [dropdownState, setDropdownState] = useState(defaultDropdownState);
+
   return (
     <Box
       padding={[4, 6, 4, 6]}
@@ -57,17 +61,15 @@ export default function CollectiblesList({ onAddNFT }) {
         <>
           {Object.keys(collections).map((key, index) => {
             const { collectibles } = collections[key];
+            const isExpanded = dropdownState[key];
+
             return (
-              <>
+              <div key={`collection-${index}`}>
                 <Box
                   marginBottom={2}
                   display={DISPLAY.FLEX}
                   alignItems={ALIGN_ITEMS.CENTER}
                   justifyContent={JUSTIFY_CONTENT.SPACE_BETWEEN}
-                  key={`collection-${index}`}
-                  onClick={() => {
-                    console.log(`Toggling ${key}`);
-                  }}
                 >
                   <Box alignItems={ALIGN_ITEMS.FLEX_START}>
                     <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H4}>
@@ -75,21 +77,33 @@ export default function CollectiblesList({ onAddNFT }) {
                     </Typography>
                   </Box>
                   <Box alignItems={ALIGN_ITEMS.FLEX_END}>
-                    <i className="fa fa-caret-down fa-lg" />
+                    <i
+                      className={`fa ${
+                        isExpanded ? 'fa-caret-down' : 'fa-caret-up'
+                      } fa-lg`}
+                      onClick={() => {
+                        setDropdownState((_dropdownState) => ({
+                          ..._dropdownState,
+                          [key]: !isExpanded,
+                        }));
+                      }}
+                    />
                   </Box>
                 </Box>
-                <Box>
-                  {collectibles.map((collectible, i) => {
-                    return (
-                      <img
-                        src={collectible.icon}
-                        style={{ width: '98px' }}
-                        key={`collectible-${i}`}
-                      />
-                    );
-                  })}
-                </Box>
-              </>
+                {isExpanded ? (
+                  <Box>
+                    {collectibles.map((collectible, i) => {
+                      return (
+                        <img
+                          src={collectible.icon}
+                          style={{ width: '98px' }}
+                          key={`collectible-${i}`}
+                        />
+                      );
+                    })}
+                  </Box>
+                ) : null}
+              </div>
             );
           })}
           <Box
