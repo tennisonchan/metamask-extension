@@ -7,7 +7,10 @@ import {
   fetchLocale,
   loadRelativeTimeFormatLocaleData,
 } from '../helpers/utils/i18n-helper';
-import { getMethodDataAsync } from '../helpers/utils/transactions.util';
+import {
+  getMethodDataAsync,
+  getStatusKey,
+} from '../helpers/utils/transactions.util';
 import { getSymbolAndDecimals } from '../helpers/utils/token-util';
 import { isEqualCaseInsensitive } from '../helpers/utils/util';
 import switchDirection from '../helpers/utils/switch-direction';
@@ -32,6 +35,8 @@ import {
   LEDGER_TRANSPORT_TYPES,
   LEDGER_USB_VENDOR_ID,
 } from '../../shared/constants/hardware-wallets';
+import { TRANSACTION_STATUSES } from '../../shared/constants/transaction';
+import { removeTxFromFailedTxesToDisplay } from '../ducks/app/app';
 import * as actionConstants from './actionConstants';
 
 let background = null;
@@ -1054,6 +1059,9 @@ export function updateMetamaskState(newState) {
       provider: newProvider,
     } = newState;
 
+    const { currentNetworkTxList } = getState().metamask;
+    const { currentNetworkTxList: newNetworkTxList } = newState;
+    const { failedTransactionsToDisplay = {} } = getState().appState;
     if (currentLocale && newLocale && currentLocale !== newLocale) {
       dispatch(updateCurrentLocale(newLocale));
     }
@@ -1116,6 +1124,32 @@ export function updateMetamaskState(newState) {
       type: actionConstants.UPDATE_METAMASK_STATE,
       value: newState,
     });
+
+    // check that tx status has not changed and remove it from failed transactions if it has
+    const foundTx = currentNetworkTxList.find((currentTx, index) => {
+      const newTx = newNetworkTxList[index];
+      if (
+        failedTransactionsToDisplay &&
+        failedTransactionsToDisplay[currentTx.id]
+      ) {
+        const newTxStatus = getStatusKey(newTx);
+        if (
+          isEqual(newTx.status, currentTx.status) === false &&
+          newTxStatus !== TRANSACTION_STATUSES.FAILED &&
+          newTxStatus !== TRANSACTION_STATUSES.SIGNED &&
+          newTxStatus === TRANSACTION_STATUSES.UNAPPROVED
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+    if (foundTx) {
+      // dispatch an event to remove tx from failed transaction
+      dispatch(removeTxFromFailedTxesToDisplay(foundTx.id));
+    }
   };
 }
 

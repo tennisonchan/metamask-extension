@@ -5,10 +5,7 @@ import {
   setTransactionToConfirm,
   clearConfirmTransaction,
 } from '../../ducks/confirm-transaction/confirm-transaction.duck';
-import {
-  getStatusKey,
-  isTokenMethodAction,
-} from '../../helpers/utils/transactions.util';
+import { isTokenMethodAction } from '../../helpers/utils/transactions.util';
 
 import {
   getContractMethodData,
@@ -22,7 +19,6 @@ import {
 } from '../../selectors';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { getSendTo } from '../../ducks/send';
-import { TRANSACTION_STATUSES } from '../../../shared/constants/transaction';
 import ConfirmTransaction from './confirm-transaction.component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -39,15 +35,6 @@ const mapStateToProps = (state, ownProps) => {
   const failedTransactionsToDisplay = getFailedTransactionsToDisplay(state);
   const totalUnconfirmed = unconfirmedTransactions.length;
 
-  if (failedTransactionsToDisplay && failedTransactionsToDisplay[id]) {
-    const status = getStatusKey(failedTransactionsToDisplay[id]);
-    if (
-      status !== TRANSACTION_STATUSES.FAILED &&
-      status !== TRANSACTION_STATUSES.SIGNED
-    ) {
-      delete failedTransactionsToDisplay[id];
-    }
-  }
   const transaction =
     totalUnconfirmed || failedTransactionsToDisplay[id]
       ? unapprovedTxs[id] ||
