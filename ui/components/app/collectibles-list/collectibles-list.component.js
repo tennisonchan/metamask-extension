@@ -12,6 +12,7 @@ import {
   FLEX_DIRECTION,
   ALIGN_ITEMS,
   DISPLAY,
+  SIZES,
 } from '../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
@@ -32,17 +33,19 @@ export default function CollectiblesList({ onAddNFT, onRefreshList }) {
 
   const collections = {
     Opensea: {
+      icon: './images/opensea-icon.svg',
       collectibles: [
-        { icon: './images/kitty-1.svg' },
-        { icon: './images/kitty-2.svg' },
-        { icon: './images/kitty-3.svg' },
-        { icon: './images/kitty-1.svg' },
+        { icon: './images/kitty-1.svg', backgroundColor: COLORS.PRIMARY1 },
+        { icon: './images/kitty-2.svg', backgroundColor: COLORS.ALERT3 },
+        { icon: './images/kitty-3.svg', backgroundColor: COLORS.SUCCESS1 },
+        { icon: './images/kitty-1.svg', backgroundColor: COLORS.ERROR3 },
       ],
     },
     CryptoKitties: {
+      icon: './images/opensea-icon.svg',
       collectibles: [
-        { icon: './images/kitty-1.svg' },
-        { icon: './images/kitty-2.svg' },
+        { icon: './images/kitty-1.svg', backgroundColor: COLORS.PRIMARY1 },
+        { icon: './images/kitty-2.svg', backgroundColor: COLORS.ALERT3 },
       ],
     },
   };
@@ -60,26 +63,32 @@ export default function CollectiblesList({ onAddNFT, onRefreshList }) {
       {Object.keys(collections).length > 0 ? (
         <>
           {Object.keys(collections).map((key, index) => {
-            const { collectibles } = collections[key];
+            const { icon, collectibles } = collections[key];
             const isExpanded = dropdownState[key];
 
             return (
               <div key={`collection-${index}`}>
                 <Box
-                  marginBottom={2}
+                  marginTop={4}
+                  marginBottom={4}
                   display={DISPLAY.FLEX}
                   alignItems={ALIGN_ITEMS.CENTER}
                   justifyContent={JUSTIFY_CONTENT.SPACE_BETWEEN}
                 >
                   <Box alignItems={ALIGN_ITEMS.FLEX_START}>
-                    <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H4}>
+                    <img width="28" src={icon} />
+                    <Typography
+                      marginLeft={2}
+                      color={COLORS.BLACK}
+                      variant={TYPOGRAPHY.H4}
+                    >
                       {`${key} (${collectibles.length})`}
                     </Typography>
                   </Box>
                   <Box alignItems={ALIGN_ITEMS.FLEX_END}>
                     <i
                       className={`fa fa-lg fa-chevron-${
-                        isExpanded ? 'down' : 'up'
+                        isExpanded ? 'down' : 'right'
                       }`}
                       onClick={() => {
                         setDropdownState((_dropdownState) => ({
@@ -91,14 +100,18 @@ export default function CollectiblesList({ onAddNFT, onRefreshList }) {
                   </Box>
                 </Box>
                 {isExpanded ? (
-                  <Box>
+                  <Box display={DISPLAY.FLEX}>
                     {collectibles.map((collectible, i) => {
                       return (
-                        <img
-                          src={collectible.icon}
-                          style={{ width: '98px' }}
+                        <Box
+                          marginRight={4}
+                          borderRadius={SIZES.MD}
                           key={`collectible-${i}`}
-                        />
+                          width={BLOCK_SIZES.ONE_SIXTH}
+                          backgroundColor={collectible.backgroundColor}
+                        >
+                          <img src={collectible.icon} />
+                        </Box>
                       );
                     })}
                   </Box>
@@ -107,7 +120,7 @@ export default function CollectiblesList({ onAddNFT, onRefreshList }) {
             );
           })}
           <Box
-            marginTop={4}
+            marginTop={6}
             flexDirection={FLEX_DIRECTION.COLUMN}
             justifyContent={JUSTIFY_CONTENT.CENTER}
           >
