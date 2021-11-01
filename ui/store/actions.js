@@ -1050,7 +1050,7 @@ export function unlockSucceeded(message) {
 
 export function updateMetamaskState(newState) {
   return (dispatch, getState) => {
-    const { metamask: currentState } = getState();
+    const { metamask: currentState, appState } = getState();
 
     const { currentLocale, selectedAddress, provider } = currentState;
     const {
@@ -1061,7 +1061,9 @@ export function updateMetamaskState(newState) {
 
     const { currentNetworkTxList } = getState().metamask;
     const { currentNetworkTxList: newNetworkTxList } = newState;
-    const { failedTransactionsToDisplay = {} } = getState().appState;
+    
+    const { failedTransactionsToDisplay = {} } = appState ? appState : {};
+
     if (currentLocale && newLocale && currentLocale !== newLocale) {
       dispatch(updateCurrentLocale(newLocale));
     }
@@ -1126,7 +1128,7 @@ export function updateMetamaskState(newState) {
     });
 
     // check that tx status has not changed and remove it from failed transactions if it has
-    const foundTx = currentNetworkTxList.find((currentTx, index) => {
+    const foundTx = currentNetworkTxList && currentNetworkTxList.find((currentTx, index) => {
       const newTx = newNetworkTxList[index];
       if (
         failedTransactionsToDisplay &&
