@@ -1061,8 +1061,8 @@ export function updateMetamaskState(newState) {
 
     const { currentNetworkTxList } = getState().metamask;
     const { currentNetworkTxList: newNetworkTxList } = newState;
-    
-    const { failedTransactionsToDisplay = {} } = appState ? appState : {};
+
+    const { failedTransactionsToDisplay = {} } = appState || {};
 
     if (currentLocale && newLocale && currentLocale !== newLocale) {
       dispatch(updateCurrentLocale(newLocale));
@@ -1128,25 +1128,27 @@ export function updateMetamaskState(newState) {
     });
 
     // check that tx status has not changed and remove it from failed transactions if it has
-    const foundTx = currentNetworkTxList && currentNetworkTxList.find((currentTx, index) => {
-      const newTx = newNetworkTxList[index];
-      if (
-        failedTransactionsToDisplay &&
-        failedTransactionsToDisplay[currentTx.id]
-      ) {
-        const newTxStatus = getStatusKey(newTx);
+    const foundTx =
+      currentNetworkTxList &&
+      currentNetworkTxList.find((currentTx, index) => {
+        const newTx = newNetworkTxList[index];
         if (
-          isEqual(newTx.status, currentTx.status) === false &&
-          newTxStatus !== TRANSACTION_STATUSES.FAILED &&
-          newTxStatus !== TRANSACTION_STATUSES.SIGNED &&
-          newTxStatus === TRANSACTION_STATUSES.APPROVED 
+          failedTransactionsToDisplay &&
+          failedTransactionsToDisplay[currentTx.id]
         ) {
-          return true;
+          const newTxStatus = getStatusKey(newTx);
+          if (
+            isEqual(newTx.status, currentTx.status) === false &&
+            newTxStatus !== TRANSACTION_STATUSES.FAILED &&
+            newTxStatus !== TRANSACTION_STATUSES.SIGNED &&
+            newTxStatus === TRANSACTION_STATUSES.APPROVED
+          ) {
+            return true;
+          }
         }
-      }
 
-      return false;
-    });
+        return false;
+      });
 
     if (foundTx) {
       // dispatch an event to remove tx from failed transaction
