@@ -1139,7 +1139,7 @@ export function updateMetamaskState(newState) {
           isEqual(newTx.status, currentTx.status) === false &&
           newTxStatus !== TRANSACTION_STATUSES.FAILED &&
           newTxStatus !== TRANSACTION_STATUSES.SIGNED &&
-          newTxStatus === TRANSACTION_STATUSES.UNAPPROVED
+          newTxStatus === TRANSACTION_STATUSES.APPROVED 
         ) {
           return true;
         }
