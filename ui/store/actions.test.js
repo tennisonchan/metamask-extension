@@ -9,7 +9,11 @@ import * as actions from './actions';
 
 const middleware = [thunk];
 const defaultState = {
+  appState: {
+    transactionsToDisplayOnFailure: { id: '0x' },
+  },
   metamask: {
+    currentNetworkTxList: [],
     currentLocale: 'test',
     selectedAddress: '0xFirstAddress',
     provider: { chainId: '0x1' },

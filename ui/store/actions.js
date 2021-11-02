@@ -1062,7 +1062,7 @@ export function updateMetamaskState(newState) {
     const { currentNetworkTxList } = getState().metamask;
     const { currentNetworkTxList: newNetworkTxList } = newState;
 
-    const { failedTransactionsToDisplay = {} } = appState || {};
+    const { transactionsToDisplayOnFailure = {} } = appState || {};
 
     if (currentLocale && newLocale && currentLocale !== newLocale) {
       dispatch(updateCurrentLocale(newLocale));
@@ -1127,18 +1127,19 @@ export function updateMetamaskState(newState) {
       value: newState,
     });
 
-    // check that tx status has not changed and remove it from failed transactions if it has
-    const foundTx =
-      currentNetworkTxList &&
-      currentNetworkTxList.find((currentTx, index) => {
+    // Check that the transaction was not submitted successfully, and remove it from failed transactions if it was.
+    const transactionIdsToRemove = Object.values(
+      transactionsToDisplayOnFailure,
+    ).filter((id) => {
+      const foundTx = currentNetworkTxList.find((currentTx, index) => {
         const newTx = newNetworkTxList[index];
         if (
-          failedTransactionsToDisplay &&
-          failedTransactionsToDisplay[currentTx.id]
+          transactionsToDisplayOnFailure &&
+          transactionsToDisplayOnFailure[currentTx.id]
         ) {
           const newTxStatus = getStatusKey(newTx);
           if (
-            isEqual(newTx.status, currentTx.status) === false &&
+            newTx.status !== currentTx.status &&
             newTxStatus !== TRANSACTION_STATUSES.FAILED &&
             newTxStatus !== TRANSACTION_STATUSES.SIGNED &&
             newTxStatus === TRANSACTION_STATUSES.APPROVED
@@ -1150,10 +1151,12 @@ export function updateMetamaskState(newState) {
         return false;
       });
 
-    if (foundTx) {
-      // dispatch an event to remove tx from failed transaction
-      dispatch(removeTxFromFailedTxesToDisplay(foundTx.id));
-    }
+      return foundTx ? foundTx.id === id : false;
+    });
+
+    transactionIdsToRemove.forEach((id) => {
+      dispatch(removeTxFromFailedTxesToDisplay(id));
+    });
   };
 }
 

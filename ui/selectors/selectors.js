@@ -403,11 +403,11 @@ export function getUnapprovedConfirmations(state) {
 
 export function getFailedTransactionsToDisplay(state) {
   const { currentNetworkTxList = [] } = state.metamask;
-  const { failedTransactionsToDisplay = {} } = state.appState;
+  const { transactionsToDisplayOnFailure = {} } = state.appState;
   const failedTransactions = currentNetworkTxList.reduce(
     (_failedTransactions, tx) => {
       if (
-        failedTransactionsToDisplay[tx.id] &&
+        transactionsToDisplayOnFailure[tx.id] &&
         (tx.err || tx.status === 'approved' || tx.status === 'signed')
       ) {
         return { ..._failedTransactions, [tx.id]: tx };

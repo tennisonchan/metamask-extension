@@ -32,13 +32,13 @@ const mapStateToProps = (state, ownProps) => {
   const sendTo = getSendTo(state);
 
   const unconfirmedTransactions = unconfirmedTransactionsListSelector(state);
-  const failedTransactionsToDisplay = getFailedTransactionsToDisplay(state);
+  const transactionsToDisplayOnFailure = getFailedTransactionsToDisplay(state);
   const totalUnconfirmed = unconfirmedTransactions.length;
 
   const transaction =
-    totalUnconfirmed || failedTransactionsToDisplay[id]
+    totalUnconfirmed || transactionsToDisplayOnFailure[id]
       ? unapprovedTxs[id] ||
-        failedTransactionsToDisplay[id] ||
+        transactionsToDisplayOnFailure[id] ||
         unconfirmedTransactions[0]
       : {};
   const { id: transactionId, type } = transaction;
