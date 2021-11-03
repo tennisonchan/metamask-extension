@@ -700,3 +700,12 @@ export function getProvider(state) {
 export function getFrequentRpcListDetail(state) {
   return state.metamask.frequentRpcListDetail;
 }
+
+/**
+ *  To get the useAdvancedGasFee flag to determine if teh advanced/custom gas fee has to be used as default values.
+ *  @param {*} state
+ *  @returns Boolean
+ */
+export function getUseAdvancedGasFee(state) {
+  return Boolean(state.metamask.useAdvancedGasFee);
+}
