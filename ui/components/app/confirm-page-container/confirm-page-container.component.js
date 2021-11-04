@@ -73,6 +73,7 @@ export default class ConfirmPageContainer extends Component {
     showAddToAddressBookModal: PropTypes.func,
     contact: PropTypes.object,
     isOwnedAccount: PropTypes.bool,
+    hideConfirmAnyways: PropTypes.bool,
   };
 
   render() {
@@ -123,6 +124,7 @@ export default class ConfirmPageContainer extends Component {
       handleCloseEditGas,
       currentTransaction,
       showAddToAddressBookModal,
+      hideConfirmAnyways,
       contact = {},
       isOwnedAccount,
     } = this.props;
@@ -207,6 +209,7 @@ export default class ConfirmPageContainer extends Component {
             ethGasPriceWarning={ethGasPriceWarning}
             hideTitle={hideTitle}
             onConfirmAnyways={onConfirmAnyways}
+            hideConfirmAnyways={hideConfirmAnyways}
           />
         )}
         {shouldDisplayWarning && (
