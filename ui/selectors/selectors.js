@@ -717,7 +717,6 @@ export function getAdvancedGasFeeValues(state) {
  */
 export function getIsAdvancedGasFeeDefault(state) {
   const { advancedGasFee } = state.metamask;
-  console.log(advancedGasFee);
   return (
     Boolean(advancedGasFee.maxBaseFee) && Boolean(advancedGasFee.priorityFee)
   );
