@@ -8,7 +8,11 @@ import {
 } from '../../selectors';
 import { addHexes } from '../../helpers/utils/conversions.util';
 import { isLegacyTransaction } from '../../helpers/utils/transactions.util';
-import { bnGreaterThan, bnLessThan } from '../../helpers/utils/util';
+import {
+  bnGreaterThan,
+  bnLessThan,
+  bnLessThanEqualTo,
+} from '../../helpers/utils/util';
 import { GAS_FORM_ERRORS } from '../../helpers/constants/gas';
 
 const HIGH_FEE_WARNING_MULTIPLIER = 1.5;
@@ -44,21 +48,21 @@ const HIGH_FEE_WARNING_MULTIPLIER = 1.5;
 //   return undefined;
 // };
 
-// const validateGasPrice = (
-//   isFeeMarketGasEstimate,
-//   gasPrice,
-//   supportsEIP1559,
-//   transaction,
-// ) => {
-//   if (supportsEIP1559 && isFeeMarketGasEstimate) return undefined;
-//   if (
-//     (!supportsEIP1559 || transaction?.txParams?.gasPrice) &&
-//     bnLessThanEqualTo(gasPrice, 0)
-//   ) {
-//     return GAS_FORM_ERRORS.GAS_PRICE_TOO_LOW;
-//   }
-//   return undefined;
-// };
+const validateGasPrice = (
+  isFeeMarketGasEstimate,
+  gasPrice,
+  supportsEIP1559,
+  transaction,
+) => {
+  if (supportsEIP1559 && isFeeMarketGasEstimate) return undefined;
+  if (
+    (!supportsEIP1559 || transaction?.txParams?.gasPrice) &&
+    bnLessThanEqualTo(gasPrice, 0)
+  ) {
+    return GAS_FORM_ERRORS.GAS_PRICE_TOO_LOW;
+  }
+  return undefined;
+};
 
 const getMaxPriorityFeeWarning = (
   gasFeeEstimates,
@@ -147,6 +151,7 @@ const getBalanceError = (minimumCostInHexWei, transaction, ethBalance) => {
 export function useGasFeeErrors({
   gasEstimateType,
   gasFeeEstimates,
+  gasPrice,
   isGasEstimatesLoading,
   maxPriorityFeePerGas,
   maxFeePerGas,
@@ -178,13 +183,12 @@ export function useGasFeeErrors({
   //   supportsEIP1559,
   // );
 
-  const gasPriceError = undefined;
-  // const gasPriceError = validateGasPrice(
-  //   isFeeMarketGasEstimate,
-  //   gasPrice,
-  //   supportsEIP1559,
-  //   transaction,
-  // );
+  const gasPriceError = validateGasPrice(
+    isFeeMarketGasEstimate,
+    gasPrice,
+    supportsEIP1559,
+    transaction,
+  );
 
   // Get all warnings
   const maxPriorityFeeWarning = getMaxPriorityFeeWarning(
