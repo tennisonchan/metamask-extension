@@ -28,7 +28,7 @@ const HIGH_FEE_WARNING_MULTIPLIER = 1.5;
 // };
 
 const validateMaxPriorityFee = (maxPriorityFeePerGas, supportsEIP1559) => {
-  if (!supportsEIP1559 || maxPriorityFeePerGas !== undefined) return undefined;
+  if (!supportsEIP1559 || maxPriorityFeePerGas === undefined) return undefined;
   if (bnLessThanEqualTo(maxPriorityFeePerGas, 0)) {
     return GAS_FORM_ERRORS.MAX_PRIORITY_FEE_BELOW_MINIMUM;
   }
@@ -41,7 +41,7 @@ const validateMaxFee = (
   maxPriorityFeePerGas,
   supportsEIP1559,
 ) => {
-  if (maxPriorityFeeError || !supportsEIP1559 || maxFeePerGas !== undefined)
+  if (maxPriorityFeeError || !supportsEIP1559 || maxFeePerGas === undefined)
     return undefined;
   if (bnGreaterThan(maxPriorityFeePerGas, maxFeePerGas)) {
     return GAS_FORM_ERRORS.MAX_FEE_IMBALANCE;
