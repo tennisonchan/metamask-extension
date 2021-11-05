@@ -27,42 +27,42 @@ const HIGH_FEE_WARNING_MULTIPLIER = 1.5;
 //   return undefined;
 // };
 
-// const validateMaxPriorityFee = (maxPriorityFeePerGas, supportsEIP1559) => {
-//   if (!supportsEIP1559) return undefined;
-//   if (bnLessThanEqualTo(maxPriorityFeePerGas, 0)) {
-//     return GAS_FORM_ERRORS.MAX_PRIORITY_FEE_BELOW_MINIMUM;
-//   }
-//   return undefined;
-// };
-
-// const validateMaxFee = (
-//   maxFeePerGas,
-//   maxPriorityFeeError,
-//   maxPriorityFeePerGas,
-//   supportsEIP1559,
-// ) => {
-//   if (maxPriorityFeeError || !supportsEIP1559) return undefined;
-//   if (bnGreaterThan(maxPriorityFeePerGas, maxFeePerGas)) {
-//     return GAS_FORM_ERRORS.MAX_FEE_IMBALANCE;
-//   }
-//   return undefined;
-// };
-
-const validateGasPrice = (
-  isFeeMarketGasEstimate,
-  gasPrice,
-  supportsEIP1559,
-  transaction,
-) => {
-  if (supportsEIP1559 && isFeeMarketGasEstimate) return undefined;
-  if (
-    (!supportsEIP1559 || transaction?.txParams?.gasPrice) &&
-    bnLessThanEqualTo(gasPrice, 0)
-  ) {
-    return GAS_FORM_ERRORS.GAS_PRICE_TOO_LOW;
+const validateMaxPriorityFee = (maxPriorityFeePerGas, supportsEIP1559) => {
+  if (!supportsEIP1559) return undefined;
+  if (bnLessThanEqualTo(maxPriorityFeePerGas, 0)) {
+    return GAS_FORM_ERRORS.MAX_PRIORITY_FEE_BELOW_MINIMUM;
   }
   return undefined;
 };
+
+const validateMaxFee = (
+  maxFeePerGas,
+  maxPriorityFeeError,
+  maxPriorityFeePerGas,
+  supportsEIP1559,
+) => {
+  if (maxPriorityFeeError || !supportsEIP1559) return undefined;
+  if (bnGreaterThan(maxPriorityFeePerGas, maxFeePerGas)) {
+    return GAS_FORM_ERRORS.MAX_FEE_IMBALANCE;
+  }
+  return undefined;
+};
+
+// const validateGasPrice = (
+//   isFeeMarketGasEstimate,
+//   gasPrice,
+//   supportsEIP1559,
+//   transaction,
+// ) => {
+//   if (supportsEIP1559 && isFeeMarketGasEstimate) return undefined;
+//   if (
+//     (!supportsEIP1559 || transaction?.txParams?.gasPrice) &&
+//     bnLessThanEqualTo(gasPrice, 0)
+//   ) {
+//     return GAS_FORM_ERRORS.GAS_PRICE_TOO_LOW;
+//   }
+//   return undefined;
+// };
 
 const getMaxPriorityFeeWarning = (
   gasFeeEstimates,
@@ -151,7 +151,7 @@ const getBalanceError = (minimumCostInHexWei, transaction, ethBalance) => {
 export function useGasFeeErrors({
   gasEstimateType,
   gasFeeEstimates,
-  gasPrice,
+  // gasPrice,
   isGasEstimatesLoading,
   maxPriorityFeePerGas,
   maxFeePerGas,
@@ -169,26 +169,25 @@ export function useGasFeeErrors({
   const gasLimitError = undefined;
   // const gasLimitError = validateGasLimit(gasLimit, minimumGasLimit);
 
-  const maxPriorityFeeError = undefined;
-  // const maxPriorityFeeError = validateMaxPriorityFee(
-  //   maxPriorityFeePerGas,
-  //   supportsEIP1559,
-  // );
-
-  const maxFeeError = undefined;
-  // const maxFeeError = validateMaxFee(
-  //   maxFeePerGas,
-  //   maxPriorityFeeError,
-  //   maxPriorityFeePerGas,
-  //   supportsEIP1559,
-  // );
-
-  const gasPriceError = validateGasPrice(
-    isFeeMarketGasEstimate,
-    gasPrice,
+  const maxPriorityFeeError = validateMaxPriorityFee(
+    maxPriorityFeePerGas,
     supportsEIP1559,
-    transaction,
   );
+
+  const maxFeeError = validateMaxFee(
+    maxFeePerGas,
+    maxPriorityFeeError,
+    maxPriorityFeePerGas,
+    supportsEIP1559,
+  );
+
+  const gasPriceError = undefined;
+  // const gasPriceError = validateGasPrice(
+  //   isFeeMarketGasEstimate,
+  //   gasPrice,
+  //   supportsEIP1559,
+  //   transaction,
+  // );
 
   // Get all warnings
   const maxPriorityFeeWarning = getMaxPriorityFeeWarning(
