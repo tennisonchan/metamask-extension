@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { GAS_ESTIMATE_TYPES } from '../../../shared/constants/gas';
-import { conversionGreaterThan } from '../../../shared/modules/conversion.utils';
+import { GAS_ESTIMATE_TYPES, GAS_LIMITS } from '../../../shared/constants/gas';
+import {
+  conversionGreaterThan,
+  conversionLessThan,
+} from '../../../shared/modules/conversion.utils';
 import {
   checkNetworkAndAccountSupports1559,
   getSelectedAccount,
@@ -17,15 +20,16 @@ import { GAS_FORM_ERRORS } from '../../helpers/constants/gas';
 
 const HIGH_FEE_WARNING_MULTIPLIER = 1.5;
 
-// const validateGasLimit = (gasLimit, minimumGasLimit) => {
-//   const gasLimitTooLow = conversionLessThan(
-//     { value: gasLimit, fromNumericBase: 'dec' },
-//     { value: minimumGasLimit || GAS_LIMITS.SIMPLE, fromNumericBase: 'hex' },
-//   );
+const validateGasLimit = (gasLimit, minimumGasLimit) => {
+  if (gasLimit === undefined) return undefined;
+  const gasLimitTooLow = conversionLessThan(
+    { value: gasLimit, fromNumericBase: 'dec' },
+    { value: minimumGasLimit || GAS_LIMITS.SIMPLE, fromNumericBase: 'hex' },
+  );
 
-//   if (gasLimitTooLow) return GAS_FORM_ERRORS.GAS_LIMIT_OUT_OF_BOUNDS;
-//   return undefined;
-// };
+  if (gasLimitTooLow) return GAS_FORM_ERRORS.GAS_LIMIT_OUT_OF_BOUNDS;
+  return undefined;
+};
 
 const validateMaxPriorityFee = (maxPriorityFeePerGas, supportsEIP1559) => {
   if (!supportsEIP1559) return undefined;
@@ -128,8 +132,8 @@ const getMaxFeeWarning = (
 };
 
 const getBalanceError = (minimumCostInHexWei, transaction, ethBalance) => {
-  if (minimumCostInHexWei === undefined && ethBalance === undefined)
-    return undefined;
+  if (minimumCostInHexWei === undefined || ethBalance === undefined)
+    return false;
   const minimumTxCostInHexWei = addHexes(
     minimumCostInHexWei,
     transaction?.txParams?.value || '0x0',
@@ -153,11 +157,13 @@ const getBalanceError = (minimumCostInHexWei, transaction, ethBalance) => {
 export function useGasFeeErrors({
   gasEstimateType,
   gasFeeEstimates,
+  gasLimit,
   gasPrice,
   isGasEstimatesLoading,
   maxPriorityFeePerGas,
   maxFeePerGas,
   minimumCostInHexWei,
+  minimumGasLimit,
   transaction,
 }) {
   const supportsEIP1559 =
@@ -168,8 +174,7 @@ export function useGasFeeErrors({
     gasEstimateType === GAS_ESTIMATE_TYPES.FEE_MARKET;
 
   // Get all errors
-  const gasLimitError = undefined;
-  // const gasLimitError = validateGasLimit(gasLimit, minimumGasLimit);
+  const gasLimitError = validateGasLimit(gasLimit, minimumGasLimit);
 
   const maxPriorityFeeError = validateMaxPriorityFee(
     maxPriorityFeePerGas,
