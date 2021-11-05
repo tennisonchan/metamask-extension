@@ -28,7 +28,7 @@ const HIGH_FEE_WARNING_MULTIPLIER = 1.5;
 // };
 
 const validateMaxPriorityFee = (maxPriorityFeePerGas, supportsEIP1559) => {
-  if (!supportsEIP1559 || maxPriorityFeePerGas === undefined) return undefined;
+  if (!supportsEIP1559) return undefined;
   if (bnLessThanEqualTo(maxPriorityFeePerGas, 0)) {
     return GAS_FORM_ERRORS.MAX_PRIORITY_FEE_BELOW_MINIMUM;
   }
@@ -41,8 +41,7 @@ const validateMaxFee = (
   maxPriorityFeePerGas,
   supportsEIP1559,
 ) => {
-  if (maxPriorityFeeError || !supportsEIP1559 || maxFeePerGas === undefined)
-    return undefined;
+  if (maxPriorityFeeError || !supportsEIP1559) return undefined;
   if (bnGreaterThan(maxPriorityFeePerGas, maxFeePerGas)) {
     return GAS_FORM_ERRORS.MAX_FEE_IMBALANCE;
   }
@@ -55,8 +54,7 @@ const validateGasPrice = (
   supportsEIP1559,
   transaction,
 ) => {
-  if ((supportsEIP1559 && isFeeMarketGasEstimate) || gasPrice === undefined)
-    return undefined;
+  if (supportsEIP1559 && isFeeMarketGasEstimate) return undefined;
   if (
     (!supportsEIP1559 || transaction?.txParams?.gasPrice) &&
     bnLessThanEqualTo(gasPrice, 0)
@@ -130,6 +128,8 @@ const getMaxFeeWarning = (
 };
 
 const getBalanceError = (minimumCostInHexWei, transaction, ethBalance) => {
+  if (minimumCostInHexWei === undefined && ethBalance === undefined)
+    return undefined;
   const minimumTxCostInHexWei = addHexes(
     minimumCostInHexWei,
     transaction?.txParams?.value || '0x0',
