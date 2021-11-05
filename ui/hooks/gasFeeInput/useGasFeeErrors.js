@@ -132,7 +132,7 @@ const getMaxFeeWarning = (
 
 const getBalanceError = (minimumCostInHexWei, transaction, ethBalance) => {
   const minimumTxCostInHexWei = addHexes(
-    minimumCostInHexWei,
+    minimumCostInHexWei || '0x0',
     transaction?.txParams?.value || '0x0',
   );
 
