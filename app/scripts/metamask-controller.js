@@ -2211,7 +2211,7 @@ export default class MetamaskController extends EventEmitter {
     if (keyring.type === KEYRING_TYPES.TREZOR) {
       const model = keyring.getModel();
       return model === 'T';
-    };
+    }
     return true;
   }
 
