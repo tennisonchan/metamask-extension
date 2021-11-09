@@ -803,7 +803,7 @@ export default class ConfirmTransactionBase extends Component {
 
   _beforeUnload = () => {
     const { txData: { id } = {}, cancelTransaction } = this.props;
-    cancelTransaction({ id });
+    //cancelTransaction({ id });
   };
 
   _beforeUnloadForGasPolling = () => {
