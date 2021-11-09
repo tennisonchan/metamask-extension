@@ -134,6 +134,7 @@ export default class ConfirmTransactionBase extends Component {
     nativeCurrency: PropTypes.string,
     supportsEIP1559: PropTypes.bool,
     hardwareWalletRequiresConnection: PropTypes.bool,
+    showAdvancedGasFeeModal: PropTypes.func,
   };
 
   state = {
@@ -900,6 +901,7 @@ export default class ConfirmTransactionBase extends Component {
       gasFeeIsCustom,
       nativeCurrency,
       hardwareWalletRequiresConnection,
+      showAdvancedGasFeeModal,
     } = this.props;
     const {
       submitting,
@@ -981,6 +983,7 @@ export default class ConfirmTransactionBase extends Component {
         editingGas={editingGas}
         handleCloseEditGas={() => this.handleCloseEditGas()}
         currentTransaction={txData}
+        showAdvancedGasFeeModal={() => showAdvancedGasFeeModal()}
       />
     );
   }

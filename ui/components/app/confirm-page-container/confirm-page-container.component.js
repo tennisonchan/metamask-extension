@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import SenderToRecipient from '../../ui/sender-to-recipient';
 import { PageContainerFooter } from '../../ui/page-container';
 import EditGasPopover from '../edit-gas-popover';
+import AdvancedGasPopover from '../advanced-gas-popover';
 import { EDIT_GAS_MODES } from '../../../../shared/constants/gas';
 import { GasFeeContextProvider } from '../../../contexts/gasFee';
 import ErrorMessage from '../../ui/error-message';
@@ -13,6 +14,8 @@ import {
   ConfirmPageContainerContent,
   ConfirmPageContainerNavigation,
 } from '.';
+
+const EIP_1559_V2 = process.env.EIP_1559_V2;
 
 export default class ConfirmPageContainer extends Component {
   static contextTypes = {
@@ -72,6 +75,8 @@ export default class ConfirmPageContainer extends Component {
     showAddToAddressBookModal: PropTypes.func,
     contact: PropTypes.object,
     isOwnedAccount: PropTypes.bool,
+    // AdvancedGasModal
+    showAdvancedGasFeeModal: PropTypes.func,
   };
 
   render() {
@@ -122,6 +127,7 @@ export default class ConfirmPageContainer extends Component {
       showAddToAddressBookModal,
       contact = {},
       isOwnedAccount,
+      showAdvancedGasFeeModal,
     } = this.props;
 
     const showAddToAddressDialog =
@@ -225,13 +231,16 @@ export default class ConfirmPageContainer extends Component {
               )}
             </PageContainerFooter>
           )}
-          {editingGas && (
-            <EditGasPopover
-              mode={EDIT_GAS_MODES.MODIFY_IN_PLACE}
-              onClose={handleCloseEditGas}
-              transaction={currentTransaction}
-            />
-          )}
+          {editingGas &&
+            (EIP_1559_V2 ? (
+              <AdvancedGasPopover onClose={handleCloseEditGas} />
+            ) : (
+              <EditGasPopover
+                mode={EDIT_GAS_MODES.MODIFY_IN_PLACE}
+                onClose={handleCloseEditGas}
+                transaction={currentTransaction}
+              />
+            ))}
         </div>
       </GasFeeContextProvider>
     );

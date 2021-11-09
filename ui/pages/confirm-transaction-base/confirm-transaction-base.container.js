@@ -260,6 +260,9 @@ export const mapDispatchToProps = (dispatch) => {
     updateTransactionGasFees: (gasFees) => {
       dispatch(updateTransactionGasFees({ ...gasFees, expectHexWei: true }));
     },
+    showAdvancedGasFeeModal: () => {
+      return dispatch(showModal({ name: 'ADVANCED_GAS_FEE' }));
+    },
   };
 };
 
