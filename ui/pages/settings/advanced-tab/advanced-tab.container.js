@@ -12,7 +12,6 @@ import {
   turnThreeBoxSyncingOnAndInitialize,
   setUseNonceField,
   setIpfsGateway,
-  setLedgerTransportPreference,
   setDismissSeedBackUpReminder,
 } from '../../../store/actions';
 import { getPreferences } from '../../../selectors';
@@ -86,9 +85,6 @@ export const mapDispatchToProps = (dispatch) => {
     },
     setIpfsGateway: (value) => {
       return dispatch(setIpfsGateway(value));
-    },
-    setLedgerTransportPreference: (value) => {
-      return dispatch(setLedgerTransportPreference(value));
     },
     setDismissSeedBackUpReminder: (value) => {
       return dispatch(setDismissSeedBackUpReminder(value));

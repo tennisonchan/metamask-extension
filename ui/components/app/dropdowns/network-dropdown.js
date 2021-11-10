@@ -68,7 +68,6 @@ function mapDispatchToProps(dispatch) {
         }),
       );
     },
-    hideTestNetMessage: () => dispatch(actions.hideTestNetMessage()),
   };
 }
 
