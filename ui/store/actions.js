@@ -1128,7 +1128,7 @@ export function updateMetamaskState(newState) {
     });
 
     // Check that the transaction was not submitted successfully, and remove it from failed transactions if it was.
-    const transactionIdsToRemove = Object.values(
+    const transactionIdsToRemove = Object.keys(
       transactionsToDisplayOnFailure,
     ).filter((id) => {
       const foundTx = currentNetworkTxList.find((currentTx, index) => {
