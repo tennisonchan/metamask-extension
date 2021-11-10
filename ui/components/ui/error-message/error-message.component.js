@@ -15,7 +15,11 @@ const ErrorMessage = (props, context) => {
       <div className="error-message__text">
         {error}
         {linkText ? (
-          <a className="error-message__link" href="#" onClick={onErrorMessageClick}>
+          <a
+            className="error-message__link"
+            href="#"
+            onClick={onErrorMessageClick}
+          >
             {` ${linkText}`}
           </a>
         ) : (
