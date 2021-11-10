@@ -21,17 +21,34 @@ const EditGasItem = ({ estimateType, onClose }) => {
     estimateUsed,
     gasFeeEstimates,
     gasLimit,
+    maxFeePerGas: currentMaxFeePerGas,
     setEstimateToUse,
     updateTransaction,
+    transaction: { dappSuggestedGasFees },
   } = useGasFeeContext();
   const t = useI18nContext();
 
-  const { minWaitTimeEstimate, suggestedMaxFeePerGas } =
-    gasFeeEstimates[estimateType] || {};
-  const hexMaximumTransactionFee = suggestedMaxFeePerGas
+  let maxFeePerGas;
+  let minWaitTime;
+
+  if (gasFeeEstimates[estimateType]) {
+    const { minWaitTimeEstimate, suggestedMaxFeePerGas } = gasFeeEstimates[
+      estimateType
+    ];
+    maxFeePerGas = suggestedMaxFeePerGas;
+    minWaitTime = minWaitTimeEstimate;
+  } else if (estimateType === 'dappSuggested' && dappSuggestedGasFees) {
+    // todo: time estimation for dappSuggested and custom estimateType
+    maxFeePerGas = dappSuggestedGasFees.maxFeePerGas;
+  } else if (estimateType === 'custom' && estimateUsed === 'custom') {
+    // todo: we should show default custom setting for user if available
+    maxFeePerGas = currentMaxFeePerGas;
+  }
+
+  const hexMaximumTransactionFee = maxFeePerGas
     ? getMaximumGasTotalInHexWei({
         gasLimit: decimalToHex(gasLimit),
-        maxFeePerGas: decGWEIToHexWEI(suggestedMaxFeePerGas),
+        maxFeePerGas: decGWEIToHexWEI(maxFeePerGas),
       })
     : null;
 
@@ -45,29 +62,44 @@ const EditGasItem = ({ estimateType, onClose }) => {
     <div
       className={classNames('edit-gas-item', {
         [`edit-gas-item-selected`]: estimateType === estimateUsed,
+        [`edit-gas-item-disabled`]:
+          estimateType === 'dappSuggested' && !dappSuggestedGasFees,
       })}
       role="button"
       onClick={onOptionSelect}
     >
       <span className="edit-gas-item__name">
+        {/* todo: fix custom icon */}
         <span className="edit-gas-item__icon">
           {GasLevelIconMap[estimateType]}
         </span>
-        <I18nValue messageKey={estimateType} />
+        <I18nValue
+          messageKey={
+            estimateType === 'dappSuggested'
+              ? 'dappSuggestedShortLabel'
+              : estimateType
+          }
+        />
       </span>
       <span
         className={`edit-gas-item__time-estimate edit-gas-item__time-estimate-${estimateType}`}
       >
-        {minWaitTimeEstimate && toHumanReadableTime(minWaitTimeEstimate, t)}
+        {minWaitTime
+          ? minWaitTime && toHumanReadableTime(minWaitTime, t)
+          : '--'}
       </span>
       <span
         className={`edit-gas-item__fee-estimate edit-gas-item__fee-estimate-${estimateType}`}
       >
-        <UserPreferencedCurrencyDisplay
-          key="editGasSubTextFeeAmount"
-          type={PRIMARY}
-          value={hexMaximumTransactionFee}
-        />
+        {maxFeePerGas ? (
+          <UserPreferencedCurrencyDisplay
+            key="editGasSubTextFeeAmount"
+            type={PRIMARY}
+            value={hexMaximumTransactionFee}
+          />
+        ) : (
+          '--'
+        )}
       </span>
       <span className="edit-gas-item__tooltip">
         <InfoTooltip position="top" />

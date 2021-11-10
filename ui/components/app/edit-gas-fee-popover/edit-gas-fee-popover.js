@@ -35,6 +35,9 @@ const EditGasFeePopover = ({ onClose }) => {
             <EditGasItem estimateType="low" onClose={onClose} />
             <EditGasItem estimateType="medium" onClose={onClose} />
             <EditGasItem estimateType="high" onClose={onClose} />
+            <div className="edit-gas-fee-popover__content__separator" />
+            <EditGasItem estimateType="dappSuggested" onClose={onClose} />
+            <EditGasItem estimateType="custom" onClose={onClose} />
           </div>
         </div>
       </>

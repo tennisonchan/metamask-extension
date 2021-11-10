@@ -10,6 +10,10 @@
     background-color: $ui-1;
   }
 
+  &-disabled {
+    cursor: default;
+  }
+
   &__name {
     display: inline-block;
     color: $ui-black;
