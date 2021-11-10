@@ -75,8 +75,9 @@ export default class TokenInput extends PureComponent {
     return Number(decimalValueString) ? decimalValueString : '';
   }
 
-  handleChange = (decimalValue, applyDecimals = false) => {
+  handleChange = (args = {}) => {
     const { token: { decimals } = {}, onChange } = this.props;
+    const { decimalValue, applyDecimals = false } = args;
 
     let newDecimalValue = decimalValue;
 
@@ -96,7 +97,7 @@ export default class TokenInput extends PureComponent {
   };
 
   handleBlur = (decimalValue) => {
-    this.handleChange(decimalValue, true);
+    this.handleChange({ decimalValue, applyDecimals: true });
   };
 
   renderConversionComponent() {

@@ -69,7 +69,7 @@ export default class UnitInput extends PureComponent {
     }
 
     this.setState({ value });
-    this.props.onChange(value);
+    this.props.onChange({ decimalValue: value, applyDecimals: false });
   };
 
   getInputWidth(value) {
