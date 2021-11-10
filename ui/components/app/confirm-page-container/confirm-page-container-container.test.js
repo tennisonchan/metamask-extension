@@ -61,6 +61,7 @@ describe('Confirm Page Container Container Test', () => {
     showAddToAddressBookModal: sinon.spy(),
     contact: undefined,
     isOwnedAccount: false,
+    hideTitle: false,
   };
 
   beforeAll(() => {
