@@ -1131,27 +1131,29 @@ export function updateMetamaskState(newState) {
     const transactionIdsToRemove = Object.keys(
       transactionsToDisplayOnFailure,
     ).filter((id) => {
-      const foundTx = currentNetworkTxList.find((currentTx, index) => {
-        const newTx = newNetworkTxList[index];
+      const foundTx = currentNetworkTxList
+        .map((tx, index) => {
+          return { id: tx.id, status: tx.status, index };
+        })
+        .find((currentTx) => {
+          return id === currentTx.id;
+        });
+
+      // check if the status of foundTx has changed
+      if (foundTx) {
+        const newTx = newNetworkTxList[foundTx.index];
+        const newTxStatus = getStatusKey(newTx);
         if (
-          transactionsToDisplayOnFailure &&
-          transactionsToDisplayOnFailure[currentTx.id]
+          newTx.status !== foundTx.status &&
+          newTxStatus !== TRANSACTION_STATUSES.FAILED &&
+          newTxStatus !== TRANSACTION_STATUSES.SIGNED &&
+          newTxStatus !== TRANSACTION_STATUSES.APPROVED
         ) {
-          const newTxStatus = getStatusKey(newTx);
-          if (
-            newTx.status !== currentTx.status &&
-            newTxStatus !== TRANSACTION_STATUSES.FAILED &&
-            newTxStatus !== TRANSACTION_STATUSES.SIGNED &&
-            newTxStatus !== TRANSACTION_STATUSES.APPROVED
-          ) {
-            return true;
-          }
+          return true;
         }
+      }
 
-        return false;
-      });
-
-      return foundTx ? foundTx.id === id : false;
+      return false;
     });
 
     transactionIdsToRemove.forEach((id) => {
