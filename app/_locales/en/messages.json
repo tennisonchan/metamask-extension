@@ -2556,5 +2556,8 @@
   },
   "blockNumber": {
     "message": "Block number"
+  },
+  "timeSince": {
+    "message": "Time since"
   }
 }

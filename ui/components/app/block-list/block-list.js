@@ -25,7 +25,42 @@ const sortByAttr = (blocks, sortBy) => {
   const [sortAttr, order] = sortBy.split(':');
   const isAcs = order === 'asc';
   return [...blocks].sort((aa, bb) => (aa[sortAttr] - bb[sortAttr]) * (isAcs || -1))
-}
+};
+
+// would replace this with 3rd lib if we do it in production.
+// just to avoid install new lib in this task
+// modified from https://stackoverflow.com/a/3177838
+const YEAR_IN_SEC = 31536000;
+const MONTH_IN_SEC = 2592000;
+const DAY_IN_SEC = 86400;
+const HOUR_IN_SEC = 3600;
+const MIN_IN_SEC = 60;
+
+const fromNow = (timestamp) =>  {
+  const seconds = Math.floor((new Date() - timestamp) / 1000);
+  let interval = seconds / YEAR_IN_SEC;
+  if (interval > 1) {
+    return Math.floor(interval) + " years";
+  }
+  interval = seconds / MONTH_IN_SEC;
+  if (interval > 1) {
+    return Math.floor(seconds / MONTH_IN_SEC) + " months";
+  }
+  interval = seconds / DAY_IN_SEC;
+  if (interval > 1) {
+    return Math.floor(interval) + " days";
+  }
+  interval = seconds / HOUR_IN_SEC;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours";
+  }
+  interval = seconds / MIN_IN_SEC;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes";
+  }
+
+  return Math.floor(seconds) + " seconds";
+};
 
 const BlockList = () => {
   const t = useContext(I18nContext);
@@ -96,7 +131,8 @@ const BlockList = () => {
         />
       </div>
       {sortedBlocks.map((block, i) => {
-        const { number, hash, nonce, gasLimit, gasUsed, transactions, author, maxTransactionValue, chainId } = block;
+        const { number, hash, nonce, gasLimit, gasUsed, transactions, author, maxTransactionValue, chainId, timestamp } = block;
+        const ts = new Date(Number(timestamp, 16) * 1000)
         const isSentByUser = author === currentAddress || true;
         return (
           <div className="block-list__block" key={`block-${i}`}>
@@ -106,6 +142,7 @@ const BlockList = () => {
             <div className="block-list__close" onClick={handleClose(hash)} />
             <span>{`${t("number")}: ${transformNum(number, showDecimals)}`}</span>
             <span>{`${t("network")}: ${NETWORK_TO_NAME_MAP[chainId]}`}</span>
+            <span>{`${t("timeSince")}: ${fromNow(ts)}`}</span>
             <span>{`${t("hash")}: ${hash}`}</span>
             <span>{`${t("nonce")}: ${transformNum(nonce, showDecimals)}`}</span>
             <span>{`${t("gasLimit")}: ${transformNum(gasLimit, showDecimals)}`}</span>
