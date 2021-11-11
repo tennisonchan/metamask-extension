@@ -20,6 +20,7 @@
   @each $variant, $color in design-system.$color-map {
     &--#{$variant} {
       border-color: $color;
+      background-color: $color;
     }
   }
 

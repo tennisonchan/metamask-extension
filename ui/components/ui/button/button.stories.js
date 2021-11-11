@@ -17,7 +17,7 @@ export default {
   argTypes: {
     children: { control: 'text' },
     disabled: { control: 'boolean' },
-    onClick: { action: 'clicked' },
+    onClick: { action: 'onClick' },
     type: {
       control: {
         type: 'select',

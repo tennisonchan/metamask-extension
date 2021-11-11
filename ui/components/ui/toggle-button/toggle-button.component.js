@@ -56,6 +56,7 @@ const ToggleButton = (props) => {
       className={classnames('toggle-button', `toggle-button--${modifier}`, {
         'toggle-button--disabled': disabled,
       })}
+      {...props}
     >
       <ReactToggleButton
         value={value}
@@ -66,6 +67,9 @@ const ToggleButton = (props) => {
         thumbStyle={thumbStyle}
         thumbAnimateRange={[3, 18]}
         colors={colors}
+        passThroughInputProps={{
+          'aria-label': 'toggle button',
+        }}
       />
       <div className="toggle-button__status">
         <span className="toggle-button__label-off">{offLabel}</span>

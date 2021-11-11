@@ -1,11 +1,42 @@
-.card {
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  padding: 8px;
+@use "sass:map";
+@use "design-system";
+@use "utilities";
 
-  &__title {
-    border-bottom: 1px solid #d8d8d8;
-    padding-bottom: 4px;
-    text-transform: capitalize;
-  }
+/**
+  Global Theme Variables
+  These are the context(light theme) that can be changed and trickle down 
+  to the card variables
+*/
+$color-surface-neutral: design-system.$white;
+$color-border-neutral: design-system.$ui-2;
+$border-width: 1px;
+$border-style: solid;
+$border-radius: 4px;
+
+$space-4: 4px;
+$space-8: 8px;
+$space-16: 16px;
+$space-24: 24px;
+$space-32: 32px;
+$space-40: 40px;
+
+.card {
+  /**
+    card variables
+    should maybe live in ui/css/design-system for theme-ability?
+  */
+  $card-background-color: $color-surface-neutral;
+  $card-border-color: $color-border-neutral;
+  $card-border-width: $border-width;
+  $card-border-style: $border-style;
+  $card-border-radius: $border-radius;
+  $card-padding: $space-16;
+
+  // scss
+  background-color: $card-background-color;
+  border-color: $card-border-color;
+  border-style: $card-border-style;
+  border-width: $border-width;
+  border-radius: $card-border-radius;
+  padding: $card-padding;
 }

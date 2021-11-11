@@ -11,7 +11,8 @@ export const basicCircleIcon = () => (
     border="1px solid"
     borderColor="black"
     background="white"
-    iconSize="42px"
+    iconSize="20px"
+    size="46px"
     iconSource="images/eth_logo.svg"
   />
 );

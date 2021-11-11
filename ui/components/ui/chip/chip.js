@@ -9,6 +9,7 @@ export default function Chip({
   className,
   children,
   borderColor = COLORS.UI1,
+  backgroundColor = COLORS.WHITE,
   label,
   labelProps = {},
   leftIcon,
@@ -31,6 +32,7 @@ export default function Chip({
         'chip--with-left-icon': Boolean(leftIcon),
         'chip--with-right-icon': Boolean(rightIcon),
         [`chip--${borderColor}`]: true,
+        [`chip--${backgroundColor}`]: true,
       })}
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}
@@ -54,6 +56,7 @@ export default function Chip({
 
 Chip.propTypes = {
   borderColor: PropTypes.oneOf(Object.values(COLORS)),
+  backgroundColor: PropTypes.oneOf(Object.values(COLORS)),
   label: PropTypes.string,
   children: PropTypes.node,
   labelProps: PropTypes.shape({
