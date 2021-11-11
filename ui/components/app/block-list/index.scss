@@ -43,4 +43,10 @@
     top: 0;
     cursor: pointer;
   }
+
+  &__star-wrap {
+    position: absolute;
+    right: 36px;
+    top: 8px;
+  }
 }

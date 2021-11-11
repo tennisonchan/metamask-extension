@@ -9,6 +9,11 @@ import {
 } from '../../../store/actions';
 import Button from '../../ui/button';
 import Dropdown from '../../ui/dropdown';
+import {
+  getMetaMaskAccountsOrdered,
+  getSelectedAddress,
+} from '../../../selectors';
+import StarIcon from '../../ui/icon/star-icon.component';
 
 const transformNum = (num = 0, showDecimals = false) =>
   showDecimals ? new BigNumber(num).toString(10) : num;
@@ -38,6 +43,7 @@ const BlockList = () => {
   const showDecimals = useSelector((state) => state.metamask.showDecimals);
   const sortBy = useSelector((state) => state.metamask.sortBy);
   const sortedBlocks = sortByAttr(blocks, sortBy);
+  const currentAddress = useSelector((state) => getSelectedAddress(state));
 
   const handleResetButtonClick = () => dispatch(resetBlockList());
   const isNoBlocks = blocks.length === 0;
@@ -85,9 +91,13 @@ const BlockList = () => {
         />
       </div>
       {sortedBlocks.map((block, i) => {
-        const { number, hash, nonce, gasLimit, gasUsed, transactions } = block;
+        const { number, hash, nonce, gasLimit, gasUsed, transactions, author } = block;
+        const isSentByUser = author === currentAddress || true;
         return (
           <div className="block-list__block" key={`block-${i}`}>
+            {isSentByUser && <div className="block-list__star-wrap">
+              <StarIcon />
+            </div>}
             <div className="block-list__close" onClick={handleClose(hash)} />
             <span>{`Number: ${transformNum(number, showDecimals)}`}</span>
             <span>{`Hash: ${hash}`}</span>
