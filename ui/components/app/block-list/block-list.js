@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BigNumber from 'bignumber.js';
+import { I18nContext } from '../../../contexts/i18n';
 import {
   resetBlockList,
   showNumbersAsDecimals,
@@ -20,19 +21,6 @@ import { NETWORK_TO_NAME_MAP } from '../../../../shared/constants/network';
 const transformNum = (num = 0, showDecimals = false) =>
   showDecimals ? new BigNumber(num).toString(10) : num;
 
-const SortByOptions = [
-  { name: 'Block number ↑', value: 'number:desc' },
-  { name: 'Block number ↓', value: 'number:asc' },
-  { name: 'Nonce ↑', value: 'nonce:desc' },
-  { name: 'Nonce ↓', value: 'nonce:asc' },
-  { name: 'Gas limit ↑', value: 'gasLimit:desc' },
-  { name: 'Gas limit ↓', value: 'gasLimit:asc' },
-  { name: 'Gas used ↑', value: 'gasUsed:desc' },
-  { name: 'Gas used ↓', value: 'gasUsed:asc' },
-  { name: 'Transaction count ↑', value: 'transactions:desc' },
-  { name: 'Transaction count ↓', value: 'transactions:asc' },
-];
-
 const sortByAttr = (blocks, sortBy) => {
   const [sortAttr, order] = sortBy.split(':');
   const isAcs = order === 'asc';
@@ -40,6 +28,7 @@ const sortByAttr = (blocks, sortBy) => {
 }
 
 const BlockList = () => {
+  const t = useContext(I18nContext);
   const dispatch = useDispatch();
   const blocks = useSelector((state) => state.metamask.blocks);
   const showDecimals = useSelector((state) => state.metamask.showDecimals);
@@ -51,11 +40,24 @@ const BlockList = () => {
   const sortedBlocks = sortByAttr(filteredByChainIdBlocks, sortBy);
   const isNoBlocks = filteredByChainIdBlocks.length === 0;
 
+  const SortByOptions = useMemo(() => [
+    { name: `${t("blockNumber")} ↑`, value: 'number:desc' },
+    { name: `${t("blockNumber")} ↓`, value: 'number:asc' },
+    { name: `${t("nonce")} ↑`, value: 'nonce:desc' },
+    { name: `${t("nonce")} ↓`, value: 'nonce:asc' },
+    { name: `${t("gasLimit")} ↑`, value: 'gasLimit:desc' },
+    { name: `${t("gasLimit")} ↓`, value: 'gasLimit:asc' },
+    { name: `${t("gasUsed")} ↑`, value: 'gasUsed:desc' },
+    { name: `${t("gasUsed")} ↓`, value: 'gasUsed:asc' },
+    { name: `${t("transactionCount")} ↑`, value: 'transactions:desc' },
+    { name: `${t("transactionCount")} ↓`, value: 'transactions:asc' },
+  ], t);
+
   const handleToggleNumbers = () =>
     dispatch(showNumbersAsDecimals(!showDecimals));
   const showDecimalButtonText = showDecimals
-    ? 'Display numbers as hexadecimal'
-    : 'Display numbers as decimals';
+    ? t('displayNumbersAsHex')
+    : t('displayNumbersAsDeci');
 
   const handleClose = (hash) => () => {
     dispatch(removeBlockByHash(hash));
@@ -74,7 +76,7 @@ const BlockList = () => {
           disabled={isNoBlocks}
           onClick={handleResetButtonClick}
         >
-          Reset Block List
+          {t('resetBlockList')}
         </Button>
         <Button
           type="secondary"
@@ -102,14 +104,14 @@ const BlockList = () => {
               <StarIcon />
             </div>}
             <div className="block-list__close" onClick={handleClose(hash)} />
-            <span>{`Number: ${transformNum(number, showDecimals)}`}</span>
-            <span>{`Network: ${NETWORK_TO_NAME_MAP[chainId]}`}</span>
-            <span>{`Hash: ${hash}`}</span>
-            <span>{`Nonce: ${transformNum(nonce, showDecimals)}`}</span>
-            <span>{`GasLimit: ${transformNum(gasLimit, showDecimals)}`}</span>
-            <span>{`GasUsed: ${transformNum(gasUsed, showDecimals)}`}</span>
-            <span>{`Transaction Count: ${transactions.length}`}</span>
-            <span>{`Max Transaction Value: ${transformNum(maxTransactionValue, showDecimals)}`}</span>
+            <span>{`${t("number")}: ${transformNum(number, showDecimals)}`}</span>
+            <span>{`${t("network")}: ${NETWORK_TO_NAME_MAP[chainId]}`}</span>
+            <span>{`${t("hash")}: ${hash}`}</span>
+            <span>{`${t("nonce")}: ${transformNum(nonce, showDecimals)}`}</span>
+            <span>{`${t("gasLimit")}: ${transformNum(gasLimit, showDecimals)}`}</span>
+            <span>{`${t("gasUsed")}: ${transformNum(gasUsed, showDecimals)}`}</span>
+            <span>{`${t("transactionCount")}: ${transactions.length}`}</span>
+            <span>{`${t("maxTransactionValue")}: ${transformNum(maxTransactionValue, showDecimals)}`}</span>
           </div>
         );
       })}

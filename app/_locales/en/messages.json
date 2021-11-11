@@ -2529,5 +2529,32 @@
   },
   "zeroGasPriceOnSpeedUpError": {
     "message": "Zero gas price on speed up"
+  },
+  "displayNumbersAsHex": {
+    "message": "Display numbers as hexadecimal"
+  },
+  "displayNumbersAsDeci": {
+    "message": "Display numbers as decimals"
+  },
+  "resetBlockList": {
+    "message": "Reset Block List"
+  },
+  "number": {
+    "message": "Number"
+  },
+  "network": {
+    "message": "Network"
+  },
+  "hash": {
+    "message": "Hash"
+  },
+  "transactionCount": {
+    "message": "Transaction Count"
+  },
+  "maxTransactionValue": {
+    "message": "Max Transaction Value"
+  },
+  "blockNumber": {
+    "message": "Block number"
   }
 }
