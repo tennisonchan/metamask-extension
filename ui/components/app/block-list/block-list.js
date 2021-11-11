@@ -10,7 +10,7 @@ import {
 import Button from '../../ui/button';
 import Dropdown from '../../ui/dropdown';
 
-const transformNum = (num, showDecimals = false) =>
+const transformNum = (num = 0, showDecimals = false) =>
   showDecimals ? new BigNumber(num).toString(10) : num;
 
 const SortByOptions = [
