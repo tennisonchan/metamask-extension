@@ -37,7 +37,8 @@ export default class BlockController {
 
   resetBlockList = () => {
     this.store.updateState({
-      blocks: {},
+      // initState.block is an array
+      blocks: [],
     });
   };
 }
