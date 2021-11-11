@@ -14,6 +14,8 @@ import {
   getSelectedAddress,
 } from '../../../selectors';
 import StarIcon from '../../ui/icon/star-icon.component';
+import { getCurrentChainId } from '../../../selectors/selectors';
+import { NETWORK_TO_NAME_MAP } from '../../../../shared/constants/network';
 
 const transformNum = (num = 0, showDecimals = false) =>
   showDecimals ? new BigNumber(num).toString(10) : num;
@@ -42,11 +44,12 @@ const BlockList = () => {
   const blocks = useSelector((state) => state.metamask.blocks);
   const showDecimals = useSelector((state) => state.metamask.showDecimals);
   const sortBy = useSelector((state) => state.metamask.sortBy);
-  const sortedBlocks = sortByAttr(blocks, sortBy);
   const currentAddress = useSelector((state) => getSelectedAddress(state));
-
   const handleResetButtonClick = () => dispatch(resetBlockList());
-  const isNoBlocks = blocks.length === 0;
+  const chainId = useSelector(getCurrentChainId);
+  const filteredByChainIdBlocks = blocks.filter(b => b.chainId === chainId);
+  const sortedBlocks = sortByAttr(filteredByChainIdBlocks, sortBy);
+  const isNoBlocks = filteredByChainIdBlocks.length === 0;
 
   const handleToggleNumbers = () =>
     dispatch(showNumbersAsDecimals(!showDecimals));
@@ -91,7 +94,7 @@ const BlockList = () => {
         />
       </div>
       {sortedBlocks.map((block, i) => {
-        const { number, hash, nonce, gasLimit, gasUsed, transactions, author, maxTransactionValue } = block;
+        const { number, hash, nonce, gasLimit, gasUsed, transactions, author, maxTransactionValue, chainId } = block;
         const isSentByUser = author === currentAddress || true;
         return (
           <div className="block-list__block" key={`block-${i}`}>
@@ -100,6 +103,7 @@ const BlockList = () => {
             </div>}
             <div className="block-list__close" onClick={handleClose(hash)} />
             <span>{`Number: ${transformNum(number, showDecimals)}`}</span>
+            <span>{`Network: ${NETWORK_TO_NAME_MAP[chainId]}`}</span>
             <span>{`Hash: ${hash}`}</span>
             <span>{`Nonce: ${transformNum(nonce, showDecimals)}`}</span>
             <span>{`GasLimit: ${transformNum(gasLimit, showDecimals)}`}</span>

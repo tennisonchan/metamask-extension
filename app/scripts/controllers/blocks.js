@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 
 export default class BlockController {
   constructor(opts = {}) {
-    const { blockTracker, provider } = opts;
+    const { blockTracker, provider, getCurrentChainId } = opts;
 
     const initState = {
       blocks: [],
@@ -11,6 +11,7 @@ export default class BlockController {
       sortBy: 'number:desc',
     };
     this.provider = provider;
+    this._getCurrentChainId = getCurrentChainId;
     this.store = new ObservableStore(initState);
 
     blockTracker.removeListener('latest', this._updateBlocks);
@@ -19,6 +20,7 @@ export default class BlockController {
 
   _updateBlocks = async (blockNumber) => {
     const { blocks } = this.store.getState();
+    const chainId = this._getCurrentChainId();
     const res = await this.provider.sendAsync({
       jsonrpc: '2.0',
       method: 'eth_getBlockByNumber',
@@ -35,12 +37,12 @@ export default class BlockController {
         params: [tx],
         id: 1,
       })
-    ))
+    ));
     const txValues = responses.map((res) => res?.result?.value) || [];
     const maxTransactionValue = `0x${BigNumber.max.apply(null, txValues).toString(16)}`;
 
     this.store.updateState({
-      blocks: [...blocks, {...latestBlock, maxTransactionValue }],
+      blocks: [...blocks, {...latestBlock, maxTransactionValue, chainId }],
     });
   };
 

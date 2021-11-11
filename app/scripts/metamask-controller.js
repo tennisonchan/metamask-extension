@@ -258,6 +258,9 @@ export default class MetamaskController extends EventEmitter {
     this.blockController = new BlockController({
       blockTracker: this.blockTracker,
       provider: this.provider,
+      getCurrentChainId: this.networkController.getCurrentChainId.bind(
+        this.networkController,
+      ),
     });
 
     this.onboardingController = new OnboardingController({
