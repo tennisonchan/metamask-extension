@@ -44,5 +44,12 @@ export default class BlockController {
 
   showNumbersAsDecimals = (showDecimals) => {
     this.store.updateState({ showDecimals });
-  }
+  };
+
+  removeBlockByHash = (hash) => {
+    const { blocks } = this.store.getState();
+    this.store.updateState({
+      blocks: blocks.filter((b) => b.hash !== hash),
+    });
+  };
 }

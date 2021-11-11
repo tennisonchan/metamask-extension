@@ -2767,3 +2767,9 @@ export function showNumbersAsDecimals(showDecimals) {
     return promisifiedBackground.showNumbersAsDecimals(showDecimals);
   };
 }
+
+export function removeBlockByHash(hash) {
+  return () => {
+    return promisifiedBackground.removeBlockByHash(hash);
+  };
+}

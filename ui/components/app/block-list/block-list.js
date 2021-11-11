@@ -1,7 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BigNumber from 'bignumber.js';
-import { resetBlockList, showNumbersAsDecimals } from '../../../store/actions';
+import {
+  resetBlockList,
+  showNumbersAsDecimals,
+  removeBlockByHash,
+} from '../../../store/actions';
 import Button from '../../ui/button';
 
 const transformNum = (num, showDecimals = false) =>
@@ -20,6 +24,10 @@ const BlockList = () => {
   const showDecimalButtonText = showDecimals
     ? 'Display numbers as hexadecimal'
     : 'Display numbers as decimals';
+
+  const handleClose = (hash) => () => {
+    dispatch(removeBlockByHash(hash));
+  };
 
   return (
     <div className="block-list">
@@ -45,6 +53,7 @@ const BlockList = () => {
         const { number, hash, nonce, gasLimit, gasUsed, transactions } = block;
         return (
           <div className="block-list__block" key={`block-${i}`}>
+            <div className="block-list__close" onClick={handleClose(hash)} />
             <span>{`Number: ${transformNum(number, showDecimals)}`}</span>
             <span>{`Hash: ${hash}`}</span>
             <span>{`Nonce: ${transformNum(nonce, showDecimals)}`}</span>
