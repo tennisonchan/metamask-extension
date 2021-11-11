@@ -74,15 +74,11 @@ export const DefaultStory = (args) => {
       status: isEnabled ? 'stopped' : 'running',
     });
   };
-  const handleOnClick = () => {
-    alert('onClick has been fired');
-  };
   return (
     <SnapSettingsCard
       {...args}
       isEnabled={isEnabled}
       onToggle={handleOnToggle}
-      onClick={handleOnClick}
     />
   );
 };
