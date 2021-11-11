@@ -2761,3 +2761,9 @@ export function resetBlockList() {
     return promisifiedBackground.resetBlockList();
   };
 }
+
+export function showNumbersAsDecimals(showDecimals) {
+  return () => {
+    return promisifiedBackground.showNumbersAsDecimals(showDecimals);
+  };
+}

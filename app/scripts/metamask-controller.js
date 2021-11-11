@@ -1024,6 +1024,11 @@ export default class MetamaskController extends EventEmitter {
         this.blockController.resetBlockList,
         this.blockController,
       ),
+
+      showNumbersAsDecimals: nodeify(
+        this.blockController.showNumbersAsDecimals,
+        this.blockController,
+      ),
     };
   }
 

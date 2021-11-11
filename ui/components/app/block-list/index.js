@@ -1,1 +1,1 @@
-export { default } from './block-list';
+export { default, _test } from './block-list';

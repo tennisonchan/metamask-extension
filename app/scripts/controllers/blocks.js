@@ -41,4 +41,8 @@ export default class BlockController {
       blocks: [],
     });
   };
+
+  showNumbersAsDecimals = (showDecimals) => {
+    this.store.updateState({ showDecimals });
+  }
 }
