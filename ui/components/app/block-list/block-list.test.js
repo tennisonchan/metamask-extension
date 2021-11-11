@@ -5,12 +5,13 @@ import thunk from 'redux-thunk';
 import { renderWithProvider } from '../../../../test/jest';
 import BlockList, { _test } from '.';
 
-const { transformNum } = _test;
+const { transformNum, sortByAttr } = _test;
 
 const createBlocksMockStore = (updateObject = {}) => {
   return {
     metamask: {
       showDecimals: false,
+      sortBy: 'number:desc',
       blocks: [
         {
           number: '0x1',
@@ -32,6 +33,8 @@ describe('BlockList', () => {
   it('renders the component with initial props', () => {
     const store = configureMockStore(middleware)(createBlocksMockStore());
     const { getByText } = renderWithProvider(<BlockList />, store);
+    expect(getByText('Block number ↑')).toBeInTheDocument();
+    expect(getByText('Display numbers as decimals')).toBeInTheDocument();
     expect(getByText('Number: 0x1')).toBeInTheDocument();
     expect(getByText('Hash: 0x2')).toBeInTheDocument();
     expect(getByText('Nonce: 0x3')).toBeInTheDocument();
@@ -73,5 +76,20 @@ describe('transformNum', () => {
 
   it('renders original string when showDecimals is undefined', () => {
     expect(transformNum('0x92d2d2')).toBe('0x92d2d2');
+  });
+});
+
+describe('sortByAttr', () => {
+  let arr
+  beforeEach(() => {
+    arr = [{number: 2}, {number: 1}, {number: 3}]
+  });
+
+  it('renders the arr sort by number in asc', () => {
+    expect(sortByAttr(arr, 'number:asc')).toEqual([{number: 1}, {number: 2}, {number: 3}]);
+  });
+
+  it('renders the arr sort by number in desc', () => {
+    expect(sortByAttr(arr, 'number:desc')).toEqual([{number: 3}, {number: 2}, {number: 1}]);
   });
 });

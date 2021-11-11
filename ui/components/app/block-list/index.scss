@@ -27,6 +27,12 @@
     }
   }
 
+  &__dropdown {
+    display: flex;
+    margin-top: 12px;
+    justify-content: end;
+  }
+
   &__close::after {
     content: '\00D7';
     font-size: 29px;

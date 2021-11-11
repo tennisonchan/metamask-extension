@@ -2773,3 +2773,9 @@ export function removeBlockByHash(hash) {
     return promisifiedBackground.removeBlockByHash(hash);
   };
 }
+
+export function selectSortByOption(sortBy) {
+  return () => {
+    return promisifiedBackground.selectSortByOption(sortBy);
+  };
+}

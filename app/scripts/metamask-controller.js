@@ -1034,6 +1034,11 @@ export default class MetamaskController extends EventEmitter {
         this.blockController.removeBlockByHash,
         this.blockController,
       ),
+
+      selectSortByOption: nodeify(
+        this.blockController.selectSortByOption,
+        this.blockController,
+      ),
     };
   }
 

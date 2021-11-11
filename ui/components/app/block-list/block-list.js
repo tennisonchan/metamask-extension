@@ -5,16 +5,39 @@ import {
   resetBlockList,
   showNumbersAsDecimals,
   removeBlockByHash,
+  selectSortByOption,
 } from '../../../store/actions';
 import Button from '../../ui/button';
+import Dropdown from '../../ui/dropdown';
 
 const transformNum = (num, showDecimals = false) =>
   showDecimals ? new BigNumber(num).toString(10) : num;
+
+const SortByOptions = [
+  { name: 'Block number ↑', value: 'number:desc' },
+  { name: 'Block number ↓', value: 'number:asc' },
+  { name: 'Nonce ↑', value: 'nonce:desc' },
+  { name: 'Nonce ↓', value: 'nonce:asc' },
+  { name: 'Gas limit ↑', value: 'gasLimit:desc' },
+  { name: 'Gas limit ↓', value: 'gasLimit:asc' },
+  { name: 'Gas used ↑', value: 'gasUsed:desc' },
+  { name: 'Gas used ↓', value: 'gasUsed:asc' },
+  { name: 'Transaction count ↑', value: 'transactions:desc' },
+  { name: 'Transaction count ↓', value: 'transactions:asc' },
+];
+
+const sortByAttr = (blocks, sortBy) => {
+  const [sortAttr, order] = sortBy.split(':');
+  const isAcs = order === 'asc';
+  return [...blocks].sort((aa, bb) => (aa[sortAttr] - bb[sortAttr]) * (isAcs || -1))
+}
 
 const BlockList = () => {
   const dispatch = useDispatch();
   const blocks = useSelector((state) => state.metamask.blocks);
   const showDecimals = useSelector((state) => state.metamask.showDecimals);
+  const sortBy = useSelector((state) => state.metamask.sortBy);
+  const sortedBlocks = sortByAttr(blocks, sortBy);
 
   const handleResetButtonClick = () => dispatch(resetBlockList());
   const isNoBlocks = blocks.length === 0;
@@ -28,6 +51,10 @@ const BlockList = () => {
   const handleClose = (hash) => () => {
     dispatch(removeBlockByHash(hash));
   };
+
+  const handleSortBySelect = (sortBy) => {
+    dispatch(selectSortByOption(sortBy));
+  }
 
   return (
     <div className="block-list">
@@ -49,7 +76,15 @@ const BlockList = () => {
           {showDecimalButtonText}
         </Button>
       </div>
-      {blocks.map((block, i) => {
+      <div className="block-list__dropdown">
+        <Dropdown
+          title="Sort By"
+          onChange={handleSortBySelect}
+          options={SortByOptions}
+          selectedOption={sortBy}
+        />
+      </div>
+      {sortedBlocks.map((block, i) => {
         const { number, hash, nonce, gasLimit, gasUsed, transactions } = block;
         return (
           <div className="block-list__block" key={`block-${i}`}>
@@ -69,6 +104,7 @@ const BlockList = () => {
 
 export const _test = {
   transformNum,
+  sortByAttr,
 };
 
 export default BlockList;

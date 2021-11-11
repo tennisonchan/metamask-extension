@@ -4,7 +4,11 @@ export default class BlockController {
   constructor(opts = {}) {
     const { blockTracker, provider } = opts;
 
-    const initState = { blocks: [], showDecimals: false };
+    const initState = {
+      blocks: [],
+      showDecimals: false,
+      sortBy: 'number:desc',
+    };
     this.provider = provider;
     this.store = new ObservableStore(initState);
 
@@ -42,4 +46,8 @@ export default class BlockController {
       blocks: blocks.filter((b) => b.hash !== hash),
     });
   };
+
+  selectSortByOption = (sortBy) => {
+    this.store.updateState({ sortBy });
+  }
 }
