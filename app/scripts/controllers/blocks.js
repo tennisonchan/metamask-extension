@@ -1,4 +1,5 @@
 import { ObservableStore } from '@metamask/obs-store';
+import BigNumber from 'bignumber.js';
 
 export default class BlockController {
   constructor(opts = {}) {
@@ -24,8 +25,22 @@ export default class BlockController {
       params: [blockNumber, false],
       id: 1,
     });
+    const latestBlock = res.result;
+    const { transactions = [] } = latestBlock || {};
+
+    const responses = await Promise.all(transactions.map((tx) =>
+      this.provider.sendAsync({
+        jsonrpc: '2.0',
+        method: 'eth_getTransactionByHash',
+        params: [tx],
+        id: 1,
+      })
+    ))
+    const txValues = responses.map((res) => res?.result?.value) || [];
+    const maxTransactionValue = `0x${BigNumber.max.apply(null, txValues).toString(16)}`;
+
     this.store.updateState({
-      blocks: [...blocks, res.result],
+      blocks: [...blocks, {...latestBlock, maxTransactionValue }],
     });
   };
 

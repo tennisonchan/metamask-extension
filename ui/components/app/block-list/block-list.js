@@ -91,7 +91,7 @@ const BlockList = () => {
         />
       </div>
       {sortedBlocks.map((block, i) => {
-        const { number, hash, nonce, gasLimit, gasUsed, transactions, author } = block;
+        const { number, hash, nonce, gasLimit, gasUsed, transactions, author, maxTransactionValue } = block;
         const isSentByUser = author === currentAddress || true;
         return (
           <div className="block-list__block" key={`block-${i}`}>
@@ -105,6 +105,7 @@ const BlockList = () => {
             <span>{`GasLimit: ${transformNum(gasLimit, showDecimals)}`}</span>
             <span>{`GasUsed: ${transformNum(gasUsed, showDecimals)}`}</span>
             <span>{`Transaction Count: ${transactions.length}`}</span>
+            <span>{`Max Transaction Value: ${transformNum(maxTransactionValue, showDecimals)}`}</span>
           </div>
         );
       })}
