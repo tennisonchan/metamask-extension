@@ -8,14 +8,16 @@ const BlockList = () => {
   const dispatch = useDispatch();
   const blocks = useSelector((state) => state.metamask.blocks);
 
+  const handleResetButtonClick = () => dispatch(resetBlockList())
+  const isNoBlocks = blocks.length === 0;
   return (
     <div className="block-list">
       <div className="block-list__buttons">
         <Button
           type="secondary"
           rounded
-          disabled
-          onClick={() => dispatch(resetBlockList())}
+          disabled={isNoBlocks}
+          onClick={handleResetButtonClick}
         >
           Reset Block List
         </Button>
