@@ -4,36 +4,26 @@ export default class BlockController {
   constructor(opts = {}) {
     const { blockTracker, provider } = opts;
 
-    const initState = { blocks: [] };
+    const initState = { blocks: [], showDecimals: false };
+    this.provider = provider;
     this.store = new ObservableStore(initState);
 
-    blockTracker.removeListener('latest', async (blockNumber) => {
-      const { blocks } = this.store.getState();
-      const res = await provider.sendAsync({
-        jsonrpc: '2.0',
-        method: 'eth_getBlockByNumber',
-        params: [blockNumber, false],
-        id: 1,
-      });
-      blocks.push(res.result);
-      this.store.updateState({
-        blocks,
-      });
-    });
-    blockTracker.addListener('latest', async (blockNumber) => {
-      const { blocks } = this.store.getState();
-      const res = await provider.sendAsync({
-        jsonrpc: '2.0',
-        method: 'eth_getBlockByNumber',
-        params: [blockNumber, false],
-        id: 1,
-      });
-      blocks.push(res.result);
-      this.store.updateState({
-        blocks,
-      });
-    });
+    blockTracker.removeListener('latest', this._updateBlocks);
+    blockTracker.addListener('latest', this._updateBlocks);
   }
+
+  _updateBlocks = async (blockNumber) => {
+    const { blocks } = this.store.getState();
+    const res = await this.provider.sendAsync({
+      jsonrpc: '2.0',
+      method: 'eth_getBlockByNumber',
+      params: [blockNumber, false],
+      id: 1,
+    });
+    this.store.updateState({
+      blocks: [...blocks, res.result],
+    });
+  };
 
   resetBlockList = () => {
     this.store.updateState({
